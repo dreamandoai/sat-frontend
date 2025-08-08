@@ -2,11 +2,14 @@ import React from "react";
 import { Button } from "../../components/Button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "../../components/Card";
 import { LogIn, UserPlus, ArrowRight } from "lucide-react"
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
+
   return(
     <div className="min-h-screen bg-light-yellow">
-      <div className="flex items-center justify-center p-4" style={{ minHeight: 'calc(100vh - 80px)' }}>
+      <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)' }}>
         <div className="w-full max-w-4xl">
           {/* Welcome Header */}
           <div className="text-center mb-8">
@@ -44,7 +47,10 @@ const Dashboard: React.FC = () => {
                     </ul>
                   </div>
                   
-                  <Button className="w-full bg-sky-blue hover:bg-sky-blue/90 text-white h-12">
+                  <Button 
+                    className="w-full bg-sky-blue hover:bg-sky-blue/90 text-white h-12" 
+                    onClick={() => navigate("/login")}
+                  >
                     Sign In
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -79,7 +85,10 @@ const Dashboard: React.FC = () => {
                     </ul>
                   </div>
                   
-                  <Button className="w-full bg-sunshine-yellow hover:bg-sunshine-yellow/90 text-white h-12">
+                  <Button 
+                    className="w-full bg-sunshine-yellow hover:bg-sunshine-yellow/90 text-white h-12" 
+                    onClick={() => navigate("/register")}
+                  >
                     Create Account
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

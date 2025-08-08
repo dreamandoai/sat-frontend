@@ -23,12 +23,7 @@ interface FormErrors {
   retypePassword?: string
 }
 
-interface RegisterProps {
-  onBack?: () => void
-  onRegistrationSuccess: (userData: { firstName: string; lastName: string; targetScore: string; email: string }) => void
-}
-
-const Register: React.FC<RegisterProps> = ({ onBack, onRegistrationSuccess }) => {
+const Register: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     surname: '',
@@ -107,18 +102,6 @@ const Register: React.FC<RegisterProps> = ({ onBack, onRegistrationSuccess }) =>
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (validateForm()) {
-      // Here you would typically send data to your backend
-      console.log('Registration data:', formData)
-      
-      // Navigate to student portal with user data
-      onRegistrationSuccess({
-        firstName: formData.name,
-        lastName: formData.surname,
-        targetScore: formData.targetScore,
-        email: formData.email
-      })
-    }
   }
 
   return (
@@ -127,17 +110,14 @@ const Register: React.FC<RegisterProps> = ({ onBack, onRegistrationSuccess }) =>
         <Card className="w-full max-w-md bg-white shadow-lg">
           <CardHeader className="space-y-2">
             <div className="flex items-center space-x-3">
-              {onBack && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={onBack}
-                  className="text-dark-blue hover:text-sky-blue hover:bg-sky-blue/10 p-2"
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-              )}
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="text-dark-blue hover:text-sky-blue hover:bg-sky-blue/10 p-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
               <div className="flex-1 text-center">
                 <CardTitle className="text-dark-blue">Create Your Account</CardTitle>
                 <CardDescription className="text-dark-blue opacity-70">

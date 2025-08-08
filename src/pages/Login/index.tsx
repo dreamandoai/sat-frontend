@@ -1,31 +1,35 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/Card';
 import { ArrowLeft } from 'lucide-react';
+import { authService } from "../../services/authService";
+import { setCredentials } from '../../store/authSlice';
 
-interface LoginProps {
-  onBack: () => void
-  onNavigateToRegister: () => void
-  onLoginSuccess: (loginData: { email: string }) => void
-}
-
-const Login: React.FC<LoginProps> = ({ onBack, onNavigateToRegister, onLoginSuccess }) => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', { email, password });
-    
-    // Navigate to student portal
-    onLoginSuccess({ email });
+    try {
+      const response = await authService.login({ email, password });
+      dispatch(setCredentials(response));
+      navigate('/diagnostic');
+    } catch (error) {
+      console.error('Login failed:', error);
+      alert('Login failed. Please check your credentials.');
+    }
   };
 
   const handleRegisterClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    onNavigateToRegister();
+    navigate("/register");
   };
 
   return (
@@ -39,8 +43,8 @@ const Login: React.FC<LoginProps> = ({ onBack, onNavigateToRegister, onLoginSucc
                   type="button"
                   variant="ghost"
                   size="sm"
-                  onClick={onBack}
                   className="text-dark-blue hover:text-sky-blue hover:bg-white/20 p-2"
+                  onClick={() => navigate(-1)}
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
