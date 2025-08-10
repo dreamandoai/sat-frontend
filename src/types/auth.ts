@@ -5,9 +5,10 @@ export interface LoginCredentials {
 
 export interface UserData {
   id: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  name: string;
-  token: string;
+  role: "student" | "teacher" | "admin";
 }
 
 export interface AuthResponse {
