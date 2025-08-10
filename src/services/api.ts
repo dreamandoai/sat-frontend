@@ -1,4 +1,6 @@
 import axios, { type AxiosInstance, type InternalAxiosRequestConfig, type AxiosError, type AxiosResponse } from 'axios';
+import { store } from '../store';
+import { logout } from '../store/authSlice';
 import type { ApiError } from "../types/api";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -21,7 +23,7 @@ class ApiService {
     // Request interceptor
     this.axiosInstance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('access_token');
         if (token && config.headers) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -34,8 +36,11 @@ class ApiService {
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => response.data,
       (error: AxiosError<ApiError>) => {
+        if (error.response?.status === 401) {
+          store.dispatch(logout());
+        }
+
         if (error.response) {
-          // Handle different HTTP status codes
           const apiError: ApiError = {
             message: error.response.data?.message || 'An error occurred',
             status: error.response.status,
@@ -43,6 +48,7 @@ class ApiService {
           };
           return Promise.reject(apiError);
         }
+
         return Promise.reject({
           message: 'Network error - please check your connection',
         } as ApiError);
