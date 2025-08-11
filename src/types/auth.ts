@@ -9,6 +9,7 @@ export interface UserData {
   last_name: string;
   email: string;
   role: "student" | "teacher" | "admin";
+  target_score: number;
 }
 
 export interface AuthResponse {

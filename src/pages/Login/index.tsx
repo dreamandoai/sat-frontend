@@ -20,7 +20,7 @@ const Login: React.FC = () => {
     try {
       const response = await authService.login({ email, password });
       dispatch(setCredentials(response));
-      navigate('/diagnostic');
+      navigate('/student-portal');
     } catch (error) {
       console.error('Login failed:', error);
       alert('Login failed. Please check your credentials.');
