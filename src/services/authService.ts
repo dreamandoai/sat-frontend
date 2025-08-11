@@ -1,6 +1,6 @@
 import { apiService } from './api';
 import type { ApiError } from '../types/api';
-import type { LoginCredentials, AuthResponse, UserData } from '../types/auth';
+import type { LoginCredentials, LoginResponse, UserData, RegisterCredentials, RegisterResponse } from '../types/auth';
 
 const storeToken = (token: string): void => {
   localStorage.setItem('access_token', token);
@@ -28,15 +28,24 @@ const removeUser = (): void => {
 };
 
 export const authService = {
-  login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
+  login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
     try {
-      const response = await apiService.post<AuthResponse>('/auth/login', credentials);
+      const response = await apiService.post<LoginResponse>('/auth/login', credentials);
       storeToken(response.token);
       storeUser(response.user);
       return response;
     } catch (error) {
       removeToken();
       removeUser();
+      throw error as ApiError;
+    }
+  },
+
+  register: async (credentials: RegisterCredentials): Promise<RegisterResponse> => {
+    try {
+      const response = await apiService.post<RegisterResponse>('/auth/register', credentials);
+      return response;
+    } catch (error) {
       throw error as ApiError;
     }
   },

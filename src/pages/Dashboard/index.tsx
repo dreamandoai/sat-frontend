@@ -48,7 +48,7 @@ const Dashboard: React.FC = () => {
                   </div>
                   
                   <Button 
-                    className="w-full bg-sky-blue hover:bg-sky-blue/90 text-white h-12" 
+                    className="w-full bg-sky-blue hover:bg-sky-blue/90 text-white h-12 cursor-pointer" 
                     onClick={() => navigate("/login")}
                   >
                     Sign In
@@ -86,7 +86,7 @@ const Dashboard: React.FC = () => {
                   </div>
                   
                   <Button 
-                    className="w-full bg-sunshine-yellow hover:bg-sunshine-yellow/90 text-white h-12" 
+                    className="w-full bg-sunshine-yellow hover:bg-sunshine-yellow/90 text-white h-12 cursor-pointer" 
                     onClick={() => navigate("/register")}
                   >
                     Create Account

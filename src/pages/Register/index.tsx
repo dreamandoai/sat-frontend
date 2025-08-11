@@ -3,12 +3,15 @@ import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { Label } from '../../components/Label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/Card'
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react'
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { authService } from "../../services/authService";
+import type { RegisterCredentials, RegisterResponse } from '../../types/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   name: string
   surname: string
-  targetScore: string
+  targetScore: number
   email: string
   password: string
   retypePassword: string
@@ -24,10 +27,11 @@ interface FormErrors {
 }
 
 const Register: React.FC = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState<FormData>({
     name: '',
     surname: '',
-    targetScore: '',
+    targetScore: 0,
     email: '',
     password: '',
     retypePassword: ''
@@ -55,13 +59,9 @@ const Register: React.FC = () => {
     }
 
     // Target score validation
-    if (!formData.targetScore.trim()) {
-      newErrors.targetScore = 'Target score is required'
-    } else {
-      const score = parseFloat(formData.targetScore)
-      if (isNaN(score) || score < 400 || score > 1600) {
-        newErrors.targetScore = 'Target score must be a number between 400 and 1600'
-      }
+    const score = formData.targetScore;
+    if (isNaN(score) || score < 400 || score > 1600) {
+      newErrors.targetScore = 'Target score must be a number between 400 and 1600'
     }
 
     // Email validation
@@ -92,7 +92,7 @@ const Register: React.FC = () => {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const handleInputChange = (field: keyof FormData, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -100,8 +100,25 @@ const Register: React.FC = () => {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (validateForm()) {
+      try {
+        const response: RegisterResponse = await authService.register({ 
+          first_name: formData.name, 
+          last_name: formData.surname,
+          email: formData.email,
+          password: formData.password,
+          target_score: formData.targetScore 
+        } as RegisterCredentials);
+        if(response.status === "success") {
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Login failed:', error);
+        alert('Login failed. Please check your credentials.');
+      }
+    }
   }
 
   return (
@@ -170,10 +187,8 @@ const Register: React.FC = () => {
                 <Input
                   id="targetScore"
                   type="number"
-                  min="400"
-                  max="1600"
                   value={formData.targetScore}
-                  onChange={(e) => handleInputChange('targetScore', e.target.value)}
+                  onChange={(e) => handleInputChange('targetScore', parseFloat(e.target.value))}
                   className={`bg-white border-2 text-dark-blue placeholder:text-dark-blue/50 ${
                     errors.targetScore ? 'border-red-500' : 'border-sky-blue/30 focus:border-sky-blue'
                   }`}
