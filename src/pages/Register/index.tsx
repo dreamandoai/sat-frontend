@@ -132,6 +132,7 @@ const Register: React.FC = () => {
                 variant="ghost"
                 size="sm"
                 className="text-dark-blue hover:text-sky-blue hover:bg-sky-blue/10 p-2"
+                onClick={() => navigate(-1)}
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
