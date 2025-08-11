@@ -48,7 +48,7 @@ const portalOptions = [
 
 const StudentPortal: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
 
   const handleOptionClick = (option: string) => {

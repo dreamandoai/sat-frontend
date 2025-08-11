@@ -45,6 +45,7 @@ export type AdaptiveQuestion = {
   difficulty: DifficultyLevel;
   question: string;
   passage?: string;
+  notes?: string;
   chartImage?: string;
   figureImage?: string;
   options: string[];
