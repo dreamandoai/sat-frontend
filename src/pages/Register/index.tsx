@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { Label } from '../../components/Label'
@@ -27,7 +27,8 @@ interface FormErrors {
 }
 
 const Register: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState<FormData>({
     name: '',
     surname: '',
