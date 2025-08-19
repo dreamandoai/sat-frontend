@@ -12,7 +12,7 @@ interface DiagnosticSectionIntroProps {
   onStart: () => void
 }
 
-export function DiagnosticSectionIntro({ section, onStart }: DiagnosticSectionIntroProps) {
+const DiagnosticSectionIntro = ({ section, onStart }: DiagnosticSectionIntroProps) => {
   const isReadingWriting = section === 'RW'
   const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics);
   const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics);
@@ -168,3 +168,5 @@ export function DiagnosticSectionIntro({ section, onStart }: DiagnosticSectionIn
     </div>
   )
 }
+
+export default DiagnosticSectionIntro;

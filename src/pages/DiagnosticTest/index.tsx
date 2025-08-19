@@ -5,20 +5,24 @@ import { Button } from '../../components/Button';
 import Navbar from '../../layouts/Navbar';
 import type { TestSection } from "../../types/diagnosticTest";
 import { ArrowLeft, LogOut, User } from 'lucide-react';
-import type { RootState } from '../../store';
+import type { AppDispatch, RootState } from '../../store';
 
-import { DiagnosticHomeScreen } from './HomeScreen';
-import { DiagnosticSectionIntro } from './SectionIntro';
+import DiagnosticHomeScreen from './HomeScreen';
+import DiagnosticSectionIntro from "./SectionIntro";
+import DiagnosticTestScreen from "./TestScreen";
 import { DiagnosticSectionTransition } from './SectionTransition';
 import { logout } from '../../store/authSlice';
 import { setNumberOfTopics } from '../../store/diagnosticSlice';
-import { diagnosticService } from '../../services/diagnosticService'
+import { diagnosticService } from '../../services/diagnosticService';
+import { startTest } from '../../services/timerService';
 
 
 const DiagnosticTest: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
+  const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics)
+  const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics)
   const [currentScreen, setCurrentScreen] = useState<"home" | "rw-intro" | "test" | "transition" | "math-intro" | "results">("home");
   const [currentSection, setCurrentSection] = useState<TestSection>("RW");
   
@@ -42,11 +46,20 @@ const DiagnosticTest: React.FC = () => {
 
   const handleStartReadingWriting = () => {
     setCurrentScreen("test");
+    numberRW && dispatch(startTest({
+      section_type: "RW",
+      duration_mins: 3 * numberRW
+    }));
   }
 
   const handleStartMath = () => {
     setCurrentSection("Math")
     setCurrentScreen("test");
+    setCurrentScreen("test");
+    numberMath && dispatch(startTest({
+      section_type: "Math",
+      duration_mins: 3 * numberMath
+    }));
   }
 
   const handleContinueToMath = () => {
@@ -107,6 +120,12 @@ const DiagnosticTest: React.FC = () => {
         <DiagnosticSectionIntro
           section={currentSection}
           onStart={handleStartReadingWriting}
+        />
+      )}
+
+      {currentScreen === "test" && (
+        <DiagnosticTestScreen
+          currentSection={currentSection}
         />
       )}
 

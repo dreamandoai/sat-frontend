@@ -9,7 +9,7 @@ interface DiagnosticHomeScreenProps {
   onStartTest: () => void
 }
 
-export function DiagnosticHomeScreen({ onStartTest }: DiagnosticHomeScreenProps) {
+const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
   const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics);
   const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics);
 
@@ -184,3 +184,5 @@ export function DiagnosticHomeScreen({ onStartTest }: DiagnosticHomeScreenProps)
     </div>
   )
 }
+
+export default DiagnosticHomeScreen;
