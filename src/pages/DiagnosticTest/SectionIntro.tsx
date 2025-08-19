@@ -1,3 +1,6 @@
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store';
+
 import { Button } from '../../components/Button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/Card';
 import { Badge } from '../../components/Badge';
@@ -10,14 +13,12 @@ interface DiagnosticSectionIntroProps {
 }
 
 export function DiagnosticSectionIntro({ section, onStart }: DiagnosticSectionIntroProps) {
-  const isReadingWriting = section === 'reading-writing'
+  const isReadingWriting = section === 'RW'
+  const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics);
+  const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics);
   
   const sectionData = {
-    'reading-writing': {
-      title: 'Reading and Writing Section',
-      questions: '28 Questions',
-      time: '32 minutes',
-      description: 'Test your reading comprehension, writing skills, grammar knowledge, and vocabulary understanding.',
+    'RW': {
       skills: [
         'Reading comprehension and analysis',
         'Grammar and language conventions',
@@ -25,11 +26,7 @@ export function DiagnosticSectionIntro({ section, onStart }: DiagnosticSectionIn
         'Writing and revision strategies'
       ]
     },
-    'math': {
-      title: 'Math Section',
-      questions: '38 Questions', 
-      time: '55 minutes',
-      description: 'Demonstrate your mathematical reasoning and problem-solving abilities across multiple domains.',
+    'Math': {
       skills: [
         'Algebra and linear equations',
         'Geometry and trigonometry',
@@ -62,7 +59,7 @@ export function DiagnosticSectionIntro({ section, onStart }: DiagnosticSectionIn
               
               {/* Section Title */}
               <CardTitle className="text-dark-blue mb-6">
-                {currentSection.title}
+                {isReadingWriting ? "Reading and Writing Section" : "Math Section"}
               </CardTitle>
               
               {/* Section Stats */}
@@ -74,20 +71,20 @@ export function DiagnosticSectionIntro({ section, onStart }: DiagnosticSectionIn
                   }`}
                 >
                   <HelpCircle className="w-4 h-4 mr-2" />
-                  {currentSection.questions}
+                  {isReadingWriting ? numberRW! * 2 : numberMath! * 2} Questions
                 </Badge>
                 <Badge 
                   variant="outline" 
                   className="border-sky-blue text-sky-blue px-4 py-2"
                 >
                   <Clock className="w-4 h-4 mr-2" />
-                  {currentSection.time}
+                  {isReadingWriting ? numberRW! * 3 : numberMath! * 3} minutes
                 </Badge>
               </div>
 
               {/* Section Description */}
               <CardDescription className="text-large text-dark-blue max-w-2xl mx-auto mb-8">
-                {currentSection.description}
+                {isReadingWriting ? "Test your reading comprehension, writing skills, grammar knowledge, and vocabulary understanding.": "Demonstrate your mathematical reasoning and problem-solving abilities across multiple domains."}
               </CardDescription>
 
               {/* Section Skills */}

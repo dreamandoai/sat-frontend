@@ -267,8 +267,8 @@ export function formatQuestionNumber(current: number, total: number): string {
 }
 
 // Helper function to format section names
-export function formatSectionName(section: 'reading-writing' | 'math'): string {
-  return section === 'reading-writing' ? 'Reading & Writing' : 'Math';
+export function formatSectionName(section: 'RW' | 'Math'): string {
+  return section === 'RW' ? 'Reading & Writing' : 'Math';
 }
 
 // Helper function to format percentage

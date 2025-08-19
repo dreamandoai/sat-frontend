@@ -75,7 +75,7 @@ export function DiagnosticTestScreen({
               <Badge 
                 variant="secondary" 
                 className="px-4 py-2 text-dark-blue border-0"
-                style={{ backgroundColor: currentSection === 'reading-writing' ? '#feefad' : '#feefad' }}
+                style={{ backgroundColor: currentSection === 'RW' ? '#feefad' : '#feefad' }}
               >
                 {formatSectionName(currentSection)}
               </Badge>

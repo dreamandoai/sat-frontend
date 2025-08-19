@@ -1,28 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import Navbar from '../../layouts/Navbar';
-import type { TestSection, TestProgress } from "../../types/diagnosticTest";
+import type { TestSection } from "../../types/diagnosticTest";
 import { ArrowLeft, LogOut, User } from 'lucide-react';
-import {
-  getCurrentQuestion,
-  getProgress,
-  canGoBack as canNavigateBack,
-  handleRWNavigation,
-  handleMathNavigation,
-  handleRWPrevious,
-  handleMathPrevious,
-  isAnswerCorrect
-} from '../../utils/navigationLogic';
 import type { RootState } from '../../store';
 
 import { DiagnosticHomeScreen } from './HomeScreen';
 import { DiagnosticSectionIntro } from './SectionIntro';
-import { DiagnosticTestScreen } from './TestScreen';
-import { DiagnosticResultsScreen } from './ResultsScreen';
 import { DiagnosticSectionTransition } from './SectionTransition';
 import { logout } from '../../store/authSlice';
+import { setNumberOfTopics } from '../../store/diagnosticSlice';
+import { diagnosticService } from '../../services/diagnosticService'
 
 
 const DiagnosticTest: React.FC = () => {
@@ -30,136 +20,45 @@ const DiagnosticTest: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const [currentScreen, setCurrentScreen] = useState<"home" | "rw-intro" | "test" | "transition" | "math-intro" | "results">("home");
-  const [currentSection, setCurrentSection] = useState<TestSection>("reading-writing");
-  const [timeRemaining, setTimeRemaining] = useState(32 * 60);
-  const [rwProgress, setRwProgress] = useState<TestProgress>({
-    questionTypeIndex: 0,
-    currentDifficulty: "medium",
-    hasAnsweredMedium: false,
-  });
-
-  // Math adaptive progress
-  const [mathProgress, setMathProgress] = useState<TestProgress>({
-    questionTypeIndex: 0,
-    currentDifficulty: "medium",
-    hasAnsweredMedium: false,
-  });
-  const [answers, setAnswers] = useState<{[key: string]: number}>({});
-  const currentQuestion = getCurrentQuestion(currentSection, rwProgress, mathProgress)
-
-  // Timer effect with automatic progression
+  const [currentSection, setCurrentSection] = useState<TestSection>("RW");
+  
   useEffect(() => {
-    if (currentScreen === "test" && timeRemaining > 0) {
-      const timer = setInterval(() => {
-        setTimeRemaining((prev) => prev - 1)
-      }, 1000)
-      return () => clearInterval(timer)
-    } else if (currentScreen === "test" && timeRemaining === 0) {
-      // Time ran out
-      if (currentSection === "reading-writing") {
-        setCurrentScreen("transition")
-      } else if (currentSection === "math") {
-        setCurrentScreen("results")
-      }
+    handleGetNumberOfTopics();
+  }, []);
+
+  const handleGetNumberOfTopics = async () => {
+    try {
+      const response = await diagnosticService.getNumberOfTopics();
+      dispatch(setNumberOfTopics(response));
+    } catch (error) {
+      throw error;
     }
-  }, [currentScreen, timeRemaining, currentSection]);
+  }
 
   const handleStartTest = () => {
-    setCurrentScreen("rw-intro")
-    setCurrentSection("reading-writing")
-    setTimeRemaining(32 * 60)
-    setRwProgress({
-      questionTypeIndex: 0,
-      currentDifficulty: "medium",
-      hasAnsweredMedium: false,
-    })
-    setAnswers({})
+    setCurrentScreen("rw-intro");
+    setCurrentSection("RW");
   }
 
   const handleStartReadingWriting = () => {
-    setCurrentScreen("test")
+    setCurrentScreen("test");
   }
 
   const handleStartMath = () => {
-    setCurrentSection("math")
-    setTimeRemaining(55 * 60)
-    setMathProgress({
-      questionTypeIndex: 0,
-      currentDifficulty: "medium",
-      hasAnsweredMedium: false,
-    })
-    setCurrentScreen("test")
+    setCurrentSection("Math")
+    setCurrentScreen("test");
   }
 
   const handleContinueToMath = () => {
-    setCurrentScreen("math-intro")
+    setCurrentScreen("math-intro");
   }
 
-  const handleAnswer = (answerIndex: number) => {
-    if (currentQuestion) {
-      setAnswers((prev) => ({
-        ...prev,
-        [currentQuestion.id]: answerIndex,
-      }))
-    }
-  }
-
-  const handleNext = () => {
-    if (!currentQuestion) return
-
-    const selectedAnswer = answers[currentQuestion.id]
-    const isCorrect = isAnswerCorrect(currentQuestion, selectedAnswer)
-    
-    if (currentSection === "reading-writing") {
-      handleRWNavigation(
-        rwProgress,
-        isCorrect,
-        setRwProgress,
-        setCurrentScreen,
-        setTimeRemaining,
-        setCurrentSection,
-        setMathProgress,
-        selectedAnswer
-      )
-    } else if (currentSection === "math") {
-      handleMathNavigation(
-        mathProgress,
-        isCorrect,
-        setMathProgress,
-        setCurrentScreen,
-        selectedAnswer
-      )
-    }
-  }
-
-  const handlePrevious = () => {
-    if (currentSection === "reading-writing") {
-      handleRWPrevious(rwProgress, setRwProgress)
-    } else if (currentSection === "math") {
-      handleMathPrevious(
-        mathProgress,
-        setMathProgress,
-        setCurrentSection,
-        setTimeRemaining,
-        setRwProgress
-      )
-    }
-  }
-
-  const canGoBack = () => {
-    return canNavigateBack(currentSection, rwProgress, mathProgress)
-  }
-
-  // Get progress using navigation logic
-  const progress = getProgress(currentSection, rwProgress, mathProgress)
-
-  const selectedAnswer = currentQuestion ? answers[currentQuestion.id] : undefined
   const handleLogout = () => {
     dispatch(logout());
   }
 
   return (
-    <div className="min-h-screen" style={{ fontFamily: "Poppins, sans-serif", backgroundColor: '#feefad' }}>
+    <div className="min-h-screen bg-[#feefad]" style={{ fontFamily: "Poppins, sans-serif" }}>
       {/* Navigation Bar */}
       <Navbar />
 
@@ -206,28 +105,14 @@ const DiagnosticTest: React.FC = () => {
 
       {currentScreen === "rw-intro" && (
         <DiagnosticSectionIntro
-          section="reading-writing"
+          section={currentSection}
           onStart={handleStartReadingWriting}
-        />
-      )}
-
-      {currentScreen === "test" && (
-        <DiagnosticTestScreen
-          currentQuestion={currentQuestion}
-          currentSection={currentSection}
-          timeRemaining={timeRemaining}
-          progress={progress}
-          selectedAnswer={selectedAnswer}
-          onAnswer={handleAnswer}
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-          canGoBack={canGoBack()}
         />
       )}
 
       {currentScreen === "math-intro" && (
         <DiagnosticSectionIntro
-          section="math"
+          section={currentSection}
           onStart={handleStartMath}
         />
       )}
@@ -236,9 +121,6 @@ const DiagnosticTest: React.FC = () => {
         <DiagnosticSectionTransition onContinue={handleContinueToMath} />
       )}
 
-      {currentScreen === "results" && (
-        <DiagnosticResultsScreen answers={answers} />
-      )}
     </div>
   )
 }

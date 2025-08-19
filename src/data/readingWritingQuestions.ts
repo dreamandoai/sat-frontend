@@ -391,5 +391,293 @@ export const readingWritingQuestions: ReadingWritingQuestionSet[] = [
       ],
       correctAnswer: 0
     }
+  },
+  {
+    questionType: 'STANDARD ENGLISH CONVENTIONS - PUNCTUATION',
+    easy: {
+      id: 'rw_conventions_easy',
+      section: 'reading-writing',
+      questionType: 'STANDARD ENGLISH CONVENTIONS - PUNCTUATION',
+      difficulty: 'easy',
+      question: 'Which choice completes the text so that it conforms to the conventions of Standard English?',
+      passage: 'According to the ancient texts of the Roman Republic, written in 509 BCE, the chief executive magistracy—the\n consulship—was initially held by two individuals annually. The Lex Valeria, ratified in __________ separated military\n command from judicial authority.',
+      options: [
+        '500 BCE—',
+        '500 BCE',
+        '500 BCE,',
+        '500 BCE:'
+      ],
+      correctAnswer: 2
+    },
+    medium: {
+      id: 'rw_conventions_medium',
+      section: 'reading-writing',
+      questionType: 'STANDARD ENGLISH CONVENTIONS - PUNCTUATION',
+      difficulty: 'medium',
+      question: 'Which choice completes the text so that it conforms to the conventions of Standard English?',
+      passage: "Dr. Anya Sharma's distinguished career includes many notable accomplishments, such as pioneering gene-editing\n techniques and developing novel therapies for genetic disorders. However, as lead researcher at BioGen Innovations\n _________ a renowned biotechnology firm that was a trailblazer in personalized medicine—Sharma joined too late to\n contribute directly to the firm's seminal research on CRISPR applications.",
+      options: [
+        'a renowned biotechnology firm,',
+        'a renowned biotechnology firm;',
+        'a renowned biotechnology firm which',
+        'a renowned biotechnology firm'
+      ],
+      correctAnswer: 0
+    },
+    hard: {
+      id: 'rw_conventions_hard',
+      section: 'reading-writing',
+      questionType: 'STANDARD ENGLISH CONVENTIONS - PUNCTUATION',
+      difficulty: 'hard',
+      question: 'Which choice completes the text so that it conforms to the conventions of Standard English?',
+      passage: "It was January of 1776 when Thomas Paine completed __________ a widely circulated pamphlet advocating American\n independence, considered a pivotal text in the Enlightenment era's political discourse.",
+      options: [
+        "Common Sense. A",
+        "Common Sense, a",
+        "Common Sense; a",
+        "Common Sense——a"
+      ],
+      correctAnswer: 1
+    }
+  },
+  {
+    questionType: 'STANDARD ENGLISH CONVENTIONS',
+    easy: {
+      id: 'rw_standard_conventions_easy',
+      section: 'reading-writing',
+      questionType: 'STANDARD ENGLISH CONVENTIONS',
+      difficulty: 'easy',
+      question: 'Which choice completes the text so that it conforms to the conventions of Standard English?',
+      passage: 'On April 22, 1970, the first Earth Day _______ a significant role in raising environmental awareness, as millions of people\n participated in protests and educational events. The celebration was later adopted by over 190 countries.',
+      options: [
+        "will play",
+        "played",
+        "plays",
+        "is playing"
+      ],
+      correctAnswer:1 
+    },
+    medium: {
+      id: 'rw_standard_conventions_medium',
+      section: 'reading-writing',
+      questionType: 'STANDARD ENGLISH CONVENTIONS',
+      difficulty: 'medium',
+      question: 'Which choice completes the text so that it conforms to the conventions of Standard English?',
+      passage: "In the classic Greek epic The Odyssey, the poet Homer muses on loyalty, perseverance, and divine intervention.\n So impactful is this particular work by Homer, an ancient Greek poet whose authorial perspective was at once vast\n and intimate, that its narrations of Bronze Age life _______ Western literature for millennia.",
+      options: [
+        "influence",
+        "influences",
+        "is influencing",
+        "has influenced"
+      ],
+      correctAnswer: 3
+    },
+    hard: {
+      id: 'rw_standard_conventions_hard',
+      section: 'reading-writing',
+      questionType: 'STANDARD ENGLISH CONVENTIONS',
+      difficulty: 'hard',
+      question: 'Which choice completes the text so that it conforms to the conventions of Standard English?',
+      passage: "The vastus lateralis and the _________________________ facilitate the extension of the knee joint and the flexion of the hip, respectively.",
+      options: [
+        "rectus femoris are quadriceps muscles, which are elongated in shape, and assist in",
+        "rectus femoris are quadriceps muscles and elongated in shape, assisting in",
+        "rectus femoris, which are quadriceps muscles, are elongated in shape and assist in",
+        "rectus femoris, being quadriceps muscles, are elongated in shape and assisting in"
+      ],
+      correctAnswer: 2
+    }
+  },
+  {
+    questionType: 'TRANSITIONS',
+    easy: {
+      id: 'rw_transitions_easy',
+      section: 'reading-writing',
+      questionType: 'TRANSITIONS',
+      difficulty: 'easy',
+      question: 'Which choice completes the text with the most logical transition?',
+      passage: 'The construction of a traditional earthen pot is a meticulous sequence of events. First, clay is kneaded and shaped into\n a basic form. _______, the pot is allowed to dry slowly in the shade. Finally, it is fired in a kiln to achieve hardness and\n durability.',
+      options: [
+        "Similarly",
+        "On the contrary",
+        "First of all",
+        "Next",
+      ],
+      correctAnswer: 3 
+    },
+    medium: {
+      id: 'rw_transitions_medium',
+      section: 'reading-writing',
+      questionType: 'TRANSITIONS',
+      difficulty: 'medium',
+      question: 'Which choice completes the text with the most logical transition?',
+      passage: `Dr. Evelyn Reed employed the pseudonym "Aether"—the name of a classical element in ancient cosmology—in her\n scientific essays published in 1888, a choice that accomplished far more than simply concealing her authorship. _______,\n it wasn't an arbitrary pen name but rather a deliberate rhetorical strategy through which Reed aligned her nascent theories\n on electromagnetism with the venerable philosophical traditions of the ancient world, thereby bolstering the intellectual\n authority of her radical postulates. The pervasive opacity of deep-sea environments, rendering parts of the complex\n ecosystems physically inaccessible to conventional optical surveys, has limited researchers' ability to fully characterize\n these habitats. _______, advanced remotely operated vehicles (ROVs) equipped with specialized sonar were the only\n way to reveal some previously unknown aspects of deep-sea biodiversity.`,
+      options: [
+        "Indeed",
+        "Conversely",
+        "In addition",
+        "However"
+      ],
+      correctAnswer: 0
+    },
+    hard: {
+      id: 'rw_transitions_hard',
+      section: 'reading-writing',
+      questionType: 'TRANSITIONS',
+      difficulty: 'hard',
+      question: 'Which choice completes the text with the most logical transition?',
+      passage: "With many elements, such as bromine, scientists were able to procure a relatively pure sample of the substance shortly after confirming its existence. __________, this was not uniformly the case with all elements; the arduous process of isolating actinium, for example, frequently took several years—even decades, to be precise—due to its extreme radioactivity and scarcity.",
+      options: [
+        "For this reason",
+        "Granted",
+        "Likewise",
+        "In other words"
+      ],
+      correctAnswer: 1
+    }
+  },
+  {
+    questionType: 'UNDERLINED SENTENCE',
+    easy: {
+      id: 'rw_underlined_sentence_easy',
+      section: 'reading-writing',
+      questionType: 'UNDERLINED SENTENCE',
+      difficulty: 'easy',
+      question: 'Which choice best describes the function of the underlined sentence in the text as a whole?',
+      passage: 'In Salish, an Indigenous language from the Pacific Northwest region of what are now the United States and Canada, kwel means "salmon," whereas kwelkwa means "many salmon" or "abundance of salmon." This phenomenon, in which an element of a root word is repeated, sometimes with modification, within another word that is related to the root word, is called reduplication. In this case, the1 element "kwel" in kwel gets repeated in kwelkwa. There are many examples of this type of reduplication in Salish.',
+      options: [
+        "It explains where the language discussed in the text is from.",
+        "It provides English translations of the Salish words discussed in the text.",
+        "It contrasts the language discussed in the text with other languages.",
+        "It provides a general definition of the phenomenon discussed in the text."
+      ],
+      correctAnswer: 3 
+    },
+    medium: {
+      id: 'rw_underlined_sentence_medium',
+      section: 'reading-writing',
+      questionType: 'UNDERLINED SENTENCE',
+      difficulty: 'medium',
+      question: 'Which choice best describes the function of the underlined sentence in the text as a whole?',
+      passage: `Svante Pääbo and other researchers studying ancient human migratory patterns have long utilized ancient DNA—genetic material recovered from fossilized remains that have been preserved under natural conditions. However, Dr. Anya Petrova and colleagues' 2021 study of Neolithic agricultural expansion patterns in Eastern Europe instead relied on skeletal isotope analysis—this approach capitalizes on the research potential offered by a novel yet hitherto relatively underutilized source of insight into ancient human dietary practices and geographical origins.`,
+      options: [
+        "It specifies potential practical applications of the isotope analysis approach that Petrova and colleagues used in their study.",
+        "It offers commentary on the significance and unique contribution of the isotope analysis approach used by Petrova and colleagues.",
+        "It emphasizes the importance of Petrova and colleagues' findings about Neolithic agricultural expansion patterns in Eastern Europe.",
+        "It explains why the skeletal isotope analysis methodology selected by Petrova and colleagues is not yet widely adopted in the field."
+      ],
+      correctAnswer: 1
+    },
+    hard: {
+      id: 'rw_underlined_sentence_hard',
+      section: 'reading-writing',
+      questionType: 'UNDERLINED SENTENCE',
+      difficulty: 'hard',
+      question: 'Which choice best describes the function of the underlined sentence in the text as a whole?',
+      passage: "Researchers examining data from the Mars Reconnaissance Orbiter, which achieved Martian orbit in 2006, were perplexed by a 300-kilometer-long linear feature on the planet's equatorial surface. Although Mars's surface is extensively scarred by impact craters and tectonic rifts, the feature near the equator seemed to exhibit attributes more consistent with fluvial erosion by ancient liquid water. Additionally, the uniform width and sinuous path of the feature did not suggest that it was formed by tectonic stretching or volcanic effusions. Based on this evidence, planetary geologist Dr. Serena Vance and her team hypothesized that the linear feature was likely once a massive river channel.",
+      options: [
+        "It introduces previous geological findings that suggested a research methodology for Dr. Vance and her team.",
+        "It implies that the research team eliminated a common alternative explanation for the feature based on newly acquired data.",
+        "It emphasizes the importance of the Mars Reconnaissance Orbiter's data to planetary geologists.",
+        "It identifies a misconception that the researchers initially held about the feature when they were first analyzing the data."
+      ],
+      correctAnswer: 1
+    }
+  },
+  {
+    questionType: `WORDS IN CONTEXT`,
+    easy: {
+      id: 'rw_words_context_easy',
+      section: 'reading-writing',
+      questionType: 'WORDS IN CONTEXT',
+      difficulty: 'easy',
+      question: 'As used in the text, what does the word "hoist" most nearly mean?',
+      passage: `The following text is from Louisa May Alcott's 1868 novel Little Women. Jo, a spirited young woman, is playing outdoors.\nShe watched her younger sister hoist a small flag onto a makeshift flagpole they had constructed in the garden. The flag was so high that her sister had to lean back almost falling, in order to see the fluttering speck against the azure sky.`,
+      options: [
+        "create",
+        "congratulate",
+        "strengthen",
+        "lift"
+      ],
+      correctAnswer: 3 
+    },
+    medium: {
+      id: 'rw_words_context_medium',
+      section: 'reading-writing',
+      questionType: 'WORDS IN CONTEXT',
+      difficulty: 'medium',
+      question: 'Which choice completes the text with the most logical and precise word or phrase?',
+      passage: `The Gleaners, painted in the realist style by Jean-François Millet, depicts peasants picking stray wheat from a field after the harvest. The realists' emphasis on accurately portraying the experiences of average working people was largely a rejection of the romantic style evident in many paintings by Paul Delaroche, which instead _______ their subjects' beauty or heroism while hiding all imperfection.`,
+      options: [
+        "mock",
+        "exaggerate",
+        "correct",
+        "undermine"
+      ],
+      correctAnswer: 1 
+    },
+    hard: {
+      id: 'rw_words_context_hard',
+      section: 'reading-writing',
+      questionType: 'WORDS IN CONTEXT',
+      difficulty: 'hard',
+      question: 'Which choice completes the text with the most logical and precise word or phrase?',
+      passage: `Archaeologists have identified a plethora of finely crafted artifacts, including specialized tools and ceremonial objects, fashioned from obsidian in numerous ancient Mesoamerican sites, including Teotihuacan, Mexico. In a 2023 paper, Dr. Elena Ramirez et al. attribute the remarkable _______ of these artifacts to the sophisticated trade networks that spanned vast geographical distances across Mesoamerica and the abundant availability of high-quality obsidian during the Classic period.`,
+      options: [
+        "expediency",
+        "fecundity",
+        "ubiquity",
+        "heterogeneity"
+      ],
+      correctAnswer: 2 
+    },
+  },
+  {
+    questionType: `COMMAND OF EVIDENCE - TEXTUAL`,
+    easy: {
+      id: 'rw_command_evidence_easy',
+      section: 'reading-writing',
+      questionType: 'COMMAND OF EVIDENCE - TEXTUAL',
+      difficulty: 'easy',
+      question: 'Which quotation from "Walden" most effectively illustrates the claim?',
+      passage: `Source: Adapted from "Walden" by Henry David Thoreau (1854)\nIn "Walden," Henry David Thoreau chronicles his two-year experiment living simply in a cabin near Walden Pond. Throughout his narrative, Thoreau critiques the complexities and unnecessary burdens of modern society, advocating for a deliberate and minimalist approach to life. He observes that many individuals are unknowingly enslaved by their material possessions and societal expectations, leading him to conclude that _____.`,
+      options: [
+        "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
+        "Most of the luxuries, and many of the so-called comforts of life, are not only not indispensable, but positive hindrances to the elevation of mankind.",
+        "If a man does not keep pace with his companions, perhaps it is because he hears a different drummer. Let him step to the music which he hears, however measured or far away.",
+        "Our life is frittered away by detail. An honest man hardly needs to count more than his ten fingers, or in extreme cases he may add his ten toes, and lump the rest."
+      ],
+      correctAnswer: 1 
+    },
+    medium: {
+      id: 'rw_command_evidence_medium',
+      section: 'reading-writing',
+      questionType: 'COMMAND OF EVIDENCE - TEXTUAL',
+      difficulty: 'medium',
+      question: `Which quotation from "A Room of One's Own" most effectively illustrates the claim?`,
+      passage: `Source: Adapted from "A Room of One's Own" by Virginia Woolf (1929)\n Virginia Woolf's "A Room of One's Own" explores the historical and societal constraints placed upon women, particularly regarding their intellectual and creative pursuits. Woolf argues that a lack of financial independence and personal space has historically stifled women's ability to produce great art and literature. She contends that these material conditions, rather than inherent intellectual inferiority, are primarily responsible for the disparity in artistic output between genders, stating that _____.`,
+      options: [
+        "For centuries, women have had to struggle against poverty and a lack of education.",
+        "A woman must have money and a room of her own if she is to write fiction.",
+        "Indeed, I would venture to guess that Anonymous, who wrote so many poems without signing them, was often a woman.",
+        "Fiction, imaginative work that is, is not dropped like a pebble upon the ground, but is the outcome of a long and laborious process."
+      ],
+      correctAnswer: 1 
+    },
+    hard: {
+      id: 'rw_command_evidence_hard',
+      section: 'reading-writing',
+      questionType: 'COMMAND OF EVIDENCE - TEXTUAL',
+      difficulty: 'hard',
+      question: `Which finding, if true, would most directly support the researchers' hypothesis?`,
+      passage: `Source: Adapted from a research paper on exoplanet atmospheres (Public Domain Equivalent)\nRecent studies on the atmospheres of exoplanets have focused on identifying biosignatures – chemical indicators that could suggest the presence of life. One promising biosignature is phosphine (PH3), which on Earth is associated with anaerobic biological activity. While non-biological processes can produce phosphine, their known mechanisms are typically insufficient to generate the concentrations observed by telescopes in certain exoplanetary atmospheres. Researchers hypothesize that the detection of significantly high levels of phosphine in an exoplanet's atmosphere, especially when other known abiotic production pathways are accounted for, might indicate the presence of microbial life.`,
+      options: [
+        "Observations reveal that the exoplanet in question has a highly active volcanic surface, a known abiotic source of phosphine.",
+        "Laboratory experiments show that phosphine can be produced in trace amounts through atmospheric reactions involving sulfur and hydrogen, common elements on many planets.",
+        "A follow-up study identifies a previously unknown exoplanetary mechanism that generates large quantities of phosphine through geological processes, unrelated to life.",
+        "Further analysis of the exoplanet's atmosphere detects the coexistence of phosphine with methane and water vapor, a combination not readily explained by known abiotic processes."
+      ],
+      correctAnswer: 3 
+    }
   }
 ];

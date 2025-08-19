@@ -1,4 +1,4 @@
-export type TestSection = 'reading-writing' | 'math';
+export type TestSection = 'RW' | 'Math';
 export type DifficultyLevel = 'easy' | 'medium' | 'hard';
 
 export type QuestionTypeRW = 
@@ -117,3 +117,8 @@ export type AnswerResult = {
   explanation?: string;
   nextDifficulty?: DifficultyLevel;
 };
+
+export type NumberOfTopics = {
+  rw: number;
+  math: number;
+}

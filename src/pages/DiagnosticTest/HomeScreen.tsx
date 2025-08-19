@@ -1,3 +1,6 @@
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store';
+
 import { Button } from '../../components/Button';
 import { Card, CardDescription, CardHeader, CardTitle } from '../../components/Card';
 import { Clock, BookOpen, Calculator, Award, ChevronRight, Brain, Users, GraduationCap } from 'lucide-react'
@@ -7,6 +10,9 @@ interface DiagnosticHomeScreenProps {
 }
 
 export function DiagnosticHomeScreen({ onStartTest }: DiagnosticHomeScreenProps) {
+  const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics);
+  const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics);
+
   return (
     <div>
       {/* Hero Section */}
@@ -29,7 +35,7 @@ export function DiagnosticHomeScreen({ onStartTest }: DiagnosticHomeScreenProps)
               </div>
               <div className="text-left">
                 <div className="font-medium text-dark-blue">
-                  87 minutes
+                  {3 * (numberMath! + numberRW!)} minutes
                 </div>
                 <div className="text-small text-sky-blue">
                   Complete Assessment
@@ -42,7 +48,7 @@ export function DiagnosticHomeScreen({ onStartTest }: DiagnosticHomeScreenProps)
               </div>
               <div className="text-left">
                 <div className="font-medium text-dark-blue">
-                  66 Questions
+                  {2 * (numberMath! + numberRW!)} Questions
                 </div>
                 <div className="text-small text-sky-blue">
                   Two Main Sections
