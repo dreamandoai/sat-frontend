@@ -1,8 +1,7 @@
-import React from "react";
 import { Button } from "../../components/Button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "../../components/Card";
 import { LogIn, UserPlus, ArrowRight } from "lucide-react"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { authService } from "../../services/authService";
 import type { RegisterCredentials, RegisterResponse } from '../../types/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 interface FormData {
   name: string

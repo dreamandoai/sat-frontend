@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '../../components/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/Card';

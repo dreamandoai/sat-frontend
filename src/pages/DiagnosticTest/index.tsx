@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router";
 import { Button } from '../../components/Button';
 import Navbar from '../../layouts/Navbar';
 import type { TestSection, Topic } from "../../types/diagnostic";
