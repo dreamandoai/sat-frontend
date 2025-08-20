@@ -21,9 +21,15 @@ const diagnosticSlice = createSlice({
     ) => {
       state.topics = action.payload
     },
+    setQuestion:(
+      state,
+      action: PayloadAction<AdaptiveQuestion>
+    ) => {
+      state.question = action.payload
+    },
   },
 });
 
-export const { setTopics } = diagnosticSlice.actions;
+export const { setTopics, setQuestion } = diagnosticSlice.actions;
 
 export default diagnosticSlice.reducer;

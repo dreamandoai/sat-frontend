@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../store';
-import { startTest, fetchRemaining } from '../../services/timerService';
+import { fetchRemaining } from '../../services/timerService';
 import { setRemaining } from '../../store/timerSlice';
+import { setQuestion } from '../../store/diagnosticSlice';
+import { diagnosticService } from '../../services/diagnosticService';
+import type { TestSection, Topic } from '../../types/diagnostic';
 
 import { Button } from '../../components/Button';
 import { Progress } from '../../components/Progress';
 import { Badge } from '../../components/Badge';
 import { Alert, AlertDescription } from '../../components/Alert';
 import { Clock, ChevronLeft, ArrowRight, AlertTriangle, CheckCircle } from 'lucide-react'
-import { QuestionDisplay } from './QuestionDisplay';
-import type { AdaptiveQuestion, TestSection, Topic } from '../../types/diagnostic';
+import QuestionDisplay from './QuestionDisplay';
 import { formatTime, formatSectionName, formatQuestionNumber } from '../../utils/formatters'
 
 interface DiagnosticTestScreenProps {
@@ -21,11 +23,30 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   const dispatch = useDispatch<AppDispatch>();
   const [ questionIndex, setQuestionIndex ] = useState<number>(0);
   const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
-  const { topics } = useSelector((state: RootState) => state.diagnostic);
-
-  // Timer alert states
+  const { topics, question } = useSelector((state: RootState) => state.diagnostic);
   const isLowTime = remaining < 300 // 5 minutes
   const isCriticalTime = remaining < 60 // 1 minute
+  const sectionColor = currentSection === 'RW' ? 'sky-blue' : 'sunshine-yellow'
+  const sectionBgColor = currentSection === 'RW' ? 'light-blue' : 'light-yellow'
+
+  const topicLength = useMemo(() => {
+    return topics && topics.filter((t: Topic) => t.section === currentSection).length
+  }, [topics, currentSection]);
+
+  const selectedTopic = useMemo(() => {
+    return topics && topics.filter((t: Topic) => t.section === currentSection)[questionIndex / 2];
+  }, [questionIndex]);
+
+  const handleGetQuestion = async (topic_id: string) => {
+    const res = await diagnosticService.getQuestion(topic_id, 0);
+    dispatch(setQuestion(res));
+  }
+
+  const handleAnswer = (answerIndex: number) => {
+    if (question) {
+      console.log(answerIndex);
+    }
+  }
 
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined;
@@ -43,7 +64,27 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
 
   useEffect(() => {
     dispatch(fetchRemaining());
-  }, [dispatch])
+  }, [dispatch]);
+
+  useEffect(() => {
+    if(selectedTopic) {
+      handleGetQuestion(selectedTopic.id);
+    }
+  }, [selectedTopic]);
+
+  if (!question) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#feefad' }}>
+        <div className="text-center">
+          <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sky-blue to-light-blue flex items-center justify-center mb-4 mx-auto animate-pulse">
+            <Clock className="w-8 h-8 text-white" />
+          </div>
+          <h2 className="text-dark-blue mb-2">Loading Question...</h2>
+          <p className="text-dark-blue opacity-60">Please wait while we prepare your next question</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#feefad' }}>
@@ -106,10 +147,26 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
               {/* Progress Counter */}
               <Badge variant="outline" className="border-sky-blue text-sky-blue px-3 py-2">
                 <span className="font-medium">
-                  {topics && formatQuestionNumber(questionIndex + 1, 2 * topics.filter((t: Topic) => t.section === currentSection).length)}
+                  {topicLength && formatQuestionNumber(questionIndex + 1, 2 * topicLength)}
                 </span>
               </Badge>
             </div>
+          </div>
+
+          {/* Progress Bar Section */}
+          <div className="mt-6 space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-small text-dark-blue opacity-70">
+                Section Progress
+              </span>
+              <span className="text-small text-dark-blue font-medium">
+                {topicLength && Math.round((questionIndex / topicLength * 2) * 100)}% Complete
+              </span>
+            </div>
+            <Progress 
+              value={topicLength && (questionIndex / topicLength * 2) * 100} 
+              className="h-3 bg-light-blue/20"
+            />
           </div>
         </div>
       </div>
@@ -125,6 +182,15 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
       )}
 
       {/* Question Content */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
+        {selectedTopic && 
+          <QuestionDisplay
+            question={question}
+            onAnswer={handleAnswer}
+            topic={selectedTopic} 
+          />
+        }
+      </div>
     </div>
   )
 }

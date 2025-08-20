@@ -25,8 +25,8 @@ const DiagnosticTest: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<"home" | "rw-intro" | "test" | "transition" | "math-intro" | "results">("home");
   const [currentSection, setCurrentSection] = useState<TestSection>("RW");
   const numberRW = useMemo(() => {
-      return topics && topics.filter((t: Topic) => t.section === "RW").length
-    }, [topics]);
+    return topics && topics.filter((t: Topic) => t.section === "RW").length
+  }, [topics]);
   const numberMath = useMemo(() => {
     return topics && topics.filter((t: Topic) => t.section === "Math").length
   }, [topics]);

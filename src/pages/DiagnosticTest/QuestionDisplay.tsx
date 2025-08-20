@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from '../../components/Badge';
-import type { AdaptiveQuestion } from '../../types/diagnostic';
+import type { AdaptiveQuestion, Topic } from '../../types/diagnostic';
 import { 
   formatCrossTextConnections, 
   formatRhetoricalSynthesis, 
@@ -12,18 +12,19 @@ interface QuestionDisplayProps {
   question: AdaptiveQuestion
   selectedAnswer?: number
   onAnswer: (answerIndex: number) => void
+  topic: Topic
 }
 
-export function QuestionDisplay({ question, selectedAnswer, onAnswer }: QuestionDisplayProps) {
+const QuestionDisplay = ({ question, selectedAnswer, onAnswer, topic }: QuestionDisplayProps) => {
   // Render passage based on question type
   const renderPassage = () => {
     if (!question.passage) return null
 
-    if (question.questionType === 'CROSS TEXT CONNECTIONS') {
+    if (topic.name === 'CROSS TEXT CONNECTIONS') {
       return formatCrossTextConnections(question.passage)
-    } else if (question.questionType === 'RHETORICAL SYNTHESIS') {
+    } else if (topic.name === 'RHETORICAL SYNTHESIS') {
       return formatRhetoricalSynthesis(question.passage)
-    } else if (question.questionType === 'UNDERLINED SENTENCE') {
+    } else if (topic.name === 'UNDERLINED SENTENCE') {
       return formatUnderlinedSentence(question.passage, question.difficulty)
     } else {
       return formatPassageWithBackgroundInfo(question.passage)
@@ -38,7 +39,7 @@ export function QuestionDisplay({ question, selectedAnswer, onAnswer }: Question
           variant="secondary" 
           className="px-3 py-1 bg-light-yellow text-dark-blue border-0"
         >
-          {question.questionType}
+          {topic.name}
         </Badge>
       </div>
 
@@ -123,4 +124,4 @@ export function QuestionDisplay({ question, selectedAnswer, onAnswer }: Question
   )
 }
 
-export default QuestionDisplay
+export default QuestionDisplay;

@@ -21,14 +21,13 @@ export type Topic = {
 }
 
 export type AdaptiveQuestion = {
-  id: string;
   section: TestSection;
-  topic_name: string;
-  difficulty: DifficultyLevel;
   question: string;
+  notes?:string;
   passage?: string;
   chartImage?: string;
   figureImage?: string;
   options: string[];
   explanation?: string;
+  difficulty: DifficultyLevel;
 };
