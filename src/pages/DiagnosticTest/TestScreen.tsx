@@ -11,7 +11,7 @@ import { Button } from '../../components/Button';
 import { Progress } from '../../components/Progress';
 import { Badge } from '../../components/Badge';
 import { Alert, AlertDescription } from '../../components/Alert';
-import { Clock, ChevronLeft, ArrowRight, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Clock, ArrowRight, AlertTriangle, CheckCircle } from 'lucide-react'
 import QuestionDisplay from './QuestionDisplay';
 import { formatTime, formatSectionName, formatQuestionNumber } from '../../utils/formatters'
 
@@ -22,30 +22,37 @@ interface DiagnosticTestScreenProps {
 const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [ questionIndex, setQuestionIndex ] = useState<number>(0);
+  const [ selectedAnswer, setSelectedAnswer ] = useState<number | null>(null);
   const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
   const { topics, question } = useSelector((state: RootState) => state.diagnostic);
   const isLowTime = remaining < 300 // 5 minutes
   const isCriticalTime = remaining < 60 // 1 minute
-  const sectionColor = currentSection === 'RW' ? 'sky-blue' : 'sunshine-yellow'
-  const sectionBgColor = currentSection === 'RW' ? 'light-blue' : 'light-yellow'
 
   const topicLength = useMemo(() => {
     return topics && topics.filter((t: Topic) => t.section === currentSection).length
   }, [topics, currentSection]);
 
   const selectedTopic = useMemo(() => {
-    return topics && topics.filter((t: Topic) => t.section === currentSection)[questionIndex / 2];
-  }, [questionIndex]);
+    if (!topics) return null;
+    const sectionTopics = topics.filter((t: Topic) => t.section === currentSection);
+    return sectionTopics[Math.floor(questionIndex / 2)];
+  }, [topics, currentSection, questionIndex]);
 
-  const handleGetQuestion = async (topic_id: string) => {
-    const res = await diagnosticService.getQuestion(topic_id, 0);
+  const handleGetQuestion = useCallback(async (topic_id: string, answer_index: number | null = null) => {
+    const finalAnswerIndex = answer_index !== null ? answer_index : -1;
+    const res = await diagnosticService.getQuestion(topic_id, finalAnswerIndex);
     dispatch(setQuestion(res));
-  }
+  }, [dispatch]);
 
   const handleAnswer = (answerIndex: number) => {
-    if (question) {
-      console.log(answerIndex);
-    }
+    setSelectedAnswer(answerIndex);
+  }
+
+  const handleNext = async () => {
+    if (!question || !selectedTopic || selectedAnswer ===  null) return;
+    setQuestionIndex(prev => prev + 1);
+    await handleGetQuestion(selectedTopic.id, selectedAnswer);
+    setSelectedAnswer(null);
   }
 
   useEffect(() => {
@@ -67,10 +74,10 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   }, [dispatch]);
 
   useEffect(() => {
-    if(selectedTopic) {
-      handleGetQuestion(selectedTopic.id);
+    if (selectedTopic && questionIndex === 0) {
+      handleGetQuestion(selectedTopic.id, -1);
     }
-  }, [selectedTopic]);
+  }, [selectedTopic, questionIndex, handleGetQuestion]);
 
   if (!question) {
     return (
@@ -160,11 +167,11 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
                 Section Progress
               </span>
               <span className="text-small text-dark-blue font-medium">
-                {topicLength && Math.round((questionIndex / topicLength * 2) * 100)}% Complete
+                {topicLength && Math.round((questionIndex / (topicLength * 2)) * 100)}% Complete
               </span>
             </div>
             <Progress 
-              value={topicLength && (questionIndex / topicLength * 2) * 100} 
+              value={topicLength && (questionIndex / (topicLength * 2)) * 100} 
               className="h-3 bg-light-blue/20"
             />
           </div>
@@ -183,13 +190,57 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
 
       {/* Question Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
-        {selectedTopic && 
-          <QuestionDisplay
-            question={question}
-            onAnswer={handleAnswer}
-            topic={selectedTopic} 
-          />
-        }
+        {selectedTopic && <QuestionDisplay
+          question={question}
+          onAnswer={handleAnswer}
+          topic={selectedTopic}
+          selectedAnswer={selectedAnswer}
+        />}
+        {/* Navigation Section */}
+        <div className="mt-16 space-y-6">
+          {/* Answer Status */}
+          <div className="text-center">
+            {selectedAnswer !== null ? (
+              <div className="inline-flex items-center gap-2 text-green-600 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
+                <CheckCircle className="w-4 h-4" />
+                <span className="text-small font-medium">Answer Selected</span>
+              </div>
+            ) : (
+              <div className="inline-flex items-center gap-2 text-dark-blue opacity-60 px-4 py-2">
+                <span className="text-small">Select an answer to continue</span>
+              </div>
+            )}
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              {/* Section Indicator */}
+              <div className="hidden sm:flex items-center gap-2 text-small text-dark-blue opacity-70">
+                <span>Question {questionIndex + 1} of {topicLength && topicLength * 2}</span>
+                <span>•</span>
+                <span>{formatSectionName(currentSection)} Section</span>
+              </div>
+            </div>
+
+            <Button
+              onClick={handleNext}
+              disabled={selectedAnswer === null}
+              size="lg"
+              className={`flex items-center gap-3 shadow-lg transform transition-all duration-200 ${
+                selectedAnswer !== null 
+                  ? 'bg-sky-blue text-white hover:bg-sky-blue/90 hover:scale-105' 
+                  : 'bg-gray-400 text-white cursor-not-allowed'
+              }`}
+              style={{ height: '56px' }}
+            >
+              <span className="font-medium text-large">Next Question</span>
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+          </div>
+
+
+        </div>
       </div>
     </div>
   )

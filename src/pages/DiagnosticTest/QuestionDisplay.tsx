@@ -10,7 +10,7 @@ import {
 
 interface QuestionDisplayProps {
   question: AdaptiveQuestion
-  selectedAnswer?: number
+  selectedAnswer: number | null
   onAnswer: (answerIndex: number) => void
   topic: Topic
 }
@@ -44,10 +44,10 @@ const QuestionDisplay = ({ question, selectedAnswer, onAnswer, topic }: Question
       </div>
 
       {/* Chart Image */}
-      {question.chartImage && (
+      {question.chart_image && (
         <div className="bg-white p-4 border border-sky-blue/20 rounded-lg shadow-sm">
           <img
-            src={question.chartImage}
+            src={question.chart_image}
             alt="Chart or graph for analysis"
             className="w-full h-auto max-w-2xl mx-auto"
           />
@@ -55,10 +55,10 @@ const QuestionDisplay = ({ question, selectedAnswer, onAnswer, topic }: Question
       )}
 
       {/* Figure Image */}
-      {question.figureImage && (
+      {question.figure_image && (
         <div className="bg-white p-4 border border-sky-blue/20 rounded-lg shadow-sm">
           <img
-            src={question.figureImage}
+            src={question.figure_image}
             alt="Mathematical figure or diagram"
             className="w-full h-auto max-w-lg mx-auto"
           />
