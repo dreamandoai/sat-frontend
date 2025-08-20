@@ -1,4 +1,4 @@
-import type { TestSection, TestProgress, DifficultyLevel } from '../types/diagnosticTest';
+import type { TestSection, TestProgress, DifficultyLevel } from '../types/diagnostic';
 import { readingWritingQuestions } from '../data/readingWritingQuestions';
 import { mathQuestions } from '../data/mathQuestions';
 

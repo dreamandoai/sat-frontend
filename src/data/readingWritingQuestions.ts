@@ -1,4 +1,4 @@
-import type { ReadingWritingQuestionSet } from '../types/diagnosticTest';
+import type { ReadingWritingQuestionSet } from '../types/diagnostic';
 import { gdpTableChart, internetSpeedChart, greenhouseGasChart } from './images';
 
 export const readingWritingQuestions: ReadingWritingQuestionSet[] = [

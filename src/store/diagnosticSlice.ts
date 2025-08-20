@@ -1,14 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { Topic, AdaptiveQuestion } from '../types/diagnostic';
 
 interface DiagnosticState {
-  numberOfRWTopics: number | null;
-  numberOfMathTopics: number | null;
-  question: any | null;
+  topics: Topic[] | null;
+  question: AdaptiveQuestion | null;
 }
 
 const initialState: DiagnosticState = {
-  numberOfRWTopics: null,
-  numberOfMathTopics: null,
+  topics: null,
   question: null
 };
 
@@ -16,16 +15,15 @@ const diagnosticSlice = createSlice({
   name: 'diagnostic',
   initialState,
   reducers: {
-    setNumberOfTopics: (
+    setTopics: (
       state,
-      action: PayloadAction<{ rw: number, math: number }>
+      action: PayloadAction<Topic[]>
     ) => {
-      state.numberOfMathTopics = action.payload.math;
-      state.numberOfRWTopics = action.payload.rw;
+      state.topics = action.payload
     },
   },
 });
 
-export const { setNumberOfTopics } = diagnosticSlice.actions;
+export const { setTopics } = diagnosticSlice.actions;
 
 export default diagnosticSlice.reducer;

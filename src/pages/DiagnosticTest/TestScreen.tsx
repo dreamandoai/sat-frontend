@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../store';
 import { startTest, fetchRemaining } from '../../services/timerService';
@@ -10,7 +10,7 @@ import { Badge } from '../../components/Badge';
 import { Alert, AlertDescription } from '../../components/Alert';
 import { Clock, ChevronLeft, ArrowRight, AlertTriangle, CheckCircle } from 'lucide-react'
 import { QuestionDisplay } from './QuestionDisplay';
-import type { AdaptiveQuestion, TestSection } from '../../types/diagnosticTest';
+import type { AdaptiveQuestion, TestSection, Topic } from '../../types/diagnostic';
 import { formatTime, formatSectionName, formatQuestionNumber } from '../../utils/formatters'
 
 interface DiagnosticTestScreenProps {
@@ -19,7 +19,10 @@ interface DiagnosticTestScreenProps {
 
 const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [ questionIndex, setQuestionIndex ] = useState<number>(0);
   const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
+  const { topics } = useSelector((state: RootState) => state.diagnostic);
+
   // Timer alert states
   const isLowTime = remaining < 300 // 5 minutes
   const isCriticalTime = remaining < 60 // 1 minute
@@ -103,7 +106,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
               {/* Progress Counter */}
               <Badge variant="outline" className="border-sky-blue text-sky-blue px-3 py-2">
                 <span className="font-medium">
-                  {formatQuestionNumber(1, 28)}
+                  {topics && formatQuestionNumber(questionIndex + 1, 2 * topics.filter((t: Topic) => t.section === currentSection).length)}
                 </span>
               </Badge>
             </div>

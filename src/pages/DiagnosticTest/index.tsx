@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import Navbar from '../../layouts/Navbar';
-import type { TestSection } from "../../types/diagnosticTest";
+import type { TestSection, Topic } from "../../types/diagnostic";
 import { ArrowLeft, LogOut, User } from 'lucide-react';
 import type { AppDispatch, RootState } from '../../store';
 
@@ -12,7 +12,7 @@ import DiagnosticSectionIntro from "./SectionIntro";
 import DiagnosticTestScreen from "./TestScreen";
 import { DiagnosticSectionTransition } from './SectionTransition';
 import { logout } from '../../store/authSlice';
-import { setNumberOfTopics } from '../../store/diagnosticSlice';
+import { setTopics } from '../../store/diagnosticSlice';
 import { diagnosticService } from '../../services/diagnosticService';
 import { startTest } from '../../services/timerService';
 
@@ -21,19 +21,24 @@ const DiagnosticTest: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
-  const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics)
-  const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics)
+  const topics = useSelector((state: RootState) => state.diagnostic.topics);
   const [currentScreen, setCurrentScreen] = useState<"home" | "rw-intro" | "test" | "transition" | "math-intro" | "results">("home");
   const [currentSection, setCurrentSection] = useState<TestSection>("RW");
+  const numberRW = useMemo(() => {
+      return topics && topics.filter((t: Topic) => t.section === "RW").length
+    }, [topics]);
+  const numberMath = useMemo(() => {
+    return topics && topics.filter((t: Topic) => t.section === "Math").length
+  }, [topics]);
   
   useEffect(() => {
-    handleGetNumberOfTopics();
+    getTopics();
   }, []);
 
-  const handleGetNumberOfTopics = async () => {
+  const getTopics = async () => {
     try {
-      const response = await diagnosticService.getNumberOfTopics();
-      dispatch(setNumberOfTopics(response));
+      const response = await diagnosticService.getTopics();
+      dispatch(setTopics(response));
     } catch (error) {
       throw error;
     }

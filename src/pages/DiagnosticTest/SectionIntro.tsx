@@ -5,7 +5,8 @@ import { Button } from '../../components/Button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/Card';
 import { Badge } from '../../components/Badge';
 import { BookOpen, Calculator, ExternalLink, Clock, HelpCircle, ChevronRight } from 'lucide-react'
-import type { TestSection } from '../../types/diagnosticTest'
+import type { TestSection, Topic } from '../../types/diagnostic'
+import { useMemo } from 'react';
 
 interface DiagnosticSectionIntroProps {
   section: TestSection
@@ -14,8 +15,13 @@ interface DiagnosticSectionIntroProps {
 
 const DiagnosticSectionIntro = ({ section, onStart }: DiagnosticSectionIntroProps) => {
   const isReadingWriting = section === 'RW'
-  const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics);
-  const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics);
+  const topics = useSelector((state: RootState) => state.diagnostic.topics);
+  const numberRW = useMemo(() => {
+    return topics && topics.filter((t: Topic) => t.section === "RW").length
+  }, [topics]);
+  const numberMath = useMemo(() => {
+    return topics && topics.filter((t: Topic) => t.section === "Math").length
+  }, [topics]);
   
   const sectionData = {
     'RW': {

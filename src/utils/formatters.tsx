@@ -1,4 +1,4 @@
-import type { DifficultyLevel } from "../types/diagnosticTest";
+import type { DifficultyLevel } from "../types/diagnostic";
 
 // Helper function to format Cross Text Connections passages
 export const formatCrossTextConnections = (passage: string) => {

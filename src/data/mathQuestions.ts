@@ -1,4 +1,4 @@
-import type { MathQuestionSet } from '../types/diagnosticTest';
+import type { MathQuestionSet } from '../types/diagnostic';
 import { 
   parallelLinesImage, 
   triangleImage, 

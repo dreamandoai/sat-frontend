@@ -10,8 +10,7 @@ interface DiagnosticHomeScreenProps {
 }
 
 const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
-  const numberMath = useSelector((state: RootState) => state.diagnostic.numberOfMathTopics);
-  const numberRW = useSelector((state: RootState) => state.diagnostic.numberOfRWTopics);
+  const topics = useSelector((state: RootState) => state.diagnostic.topics);
 
   return (
     <div>
@@ -35,7 +34,7 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
               </div>
               <div className="text-left">
                 <div className="font-medium text-dark-blue">
-                  {3 * (numberMath! + numberRW!)} minutes
+                  {topics && 3 * topics.length} minutes
                 </div>
                 <div className="text-small text-sky-blue">
                   Complete Assessment
@@ -48,7 +47,7 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
               </div>
               <div className="text-left">
                 <div className="font-medium text-dark-blue">
-                  {2 * (numberMath! + numberRW!)} Questions
+                  {topics && 2 * topics.length} Questions
                 </div>
                 <div className="text-small text-sky-blue">
                   Two Main Sections

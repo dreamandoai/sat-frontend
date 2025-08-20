@@ -1,11 +1,11 @@
 import { apiService } from './api';
 import type { ApiError } from '../types/api';
-import type { NumberOfTopics } from '../types/diagnosticTest';
+import type { Topic } from '../types/diagnostic';
 
 export const diagnosticService = {
-  getNumberOfTopics: async () => {
+  getTopics: async () => {
     try {
-      const response = await apiService.get<NumberOfTopics>(`/diagnostic/number_topics`);
+      const response = await apiService.get<Topic[]>(`/diagnostic/topics`);
       return response;
     } catch (error) {
       throw error as ApiError;

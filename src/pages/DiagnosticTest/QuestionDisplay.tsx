@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from '../../components/Badge';
-import type { AdaptiveQuestion } from '../../types/diagnosticTest';
+import type { AdaptiveQuestion } from '../../types/diagnostic';
 import { 
   formatCrossTextConnections, 
   formatRhetoricalSynthesis, 
