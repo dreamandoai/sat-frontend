@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#b2dafb] via-[#feefad] to-[#b2dafbcc]">
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12">
@@ -16,6 +16,7 @@ const Dashboard: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
           <div
             className="group relative backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-[#3fa3f633] cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105 bg-[#feefad]"
+            onClick={() => navigate("/student/login")}
           >
             <div className="relative z-10 text-center">
               <div className="p-6 rounded-2xl inline-block mb-6 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-br from-[#3fa3f6] to-[#b2dafb]">

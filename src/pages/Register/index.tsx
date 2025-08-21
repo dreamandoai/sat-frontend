@@ -1,12 +1,11 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router';
 import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { Label } from '../../components/Label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/Card'
-import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, GraduationCap, EyeOff, Eye } from 'lucide-react';
 import { authService } from "../../services/authService";
 import type { RegisterCredentials, RegisterResponse } from '../../types/auth';
-import { useNavigate } from 'react-router';
 
 interface FormData {
   name: string
@@ -123,171 +122,149 @@ const Register: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-light-yellow">
-      <div className="flex items-center justify-center h-screen">
-        <Card className="w-full max-w-md bg-white shadow-lg">
-          <CardHeader className="space-y-2">
-            <div className="flex items-center space-x-3">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="text-dark-blue hover:text-sky-blue hover:bg-sky-blue/10 p-2"
-                onClick={() => navigate(-1)}
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <div className="flex-1 text-center">
-                <CardTitle className="text-dark-blue">Create Your Account</CardTitle>
-                <CardDescription className="text-dark-blue opacity-70">
-                  Join us today and start your SAT journey
-                </CardDescription>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#b2dafb] via-[#feefad] to-[#b2dafbcc]">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12">
+        <button
+          onClick={() => navigate("/student/login")}
+          className="absolute top-6 left-6 p-2 rounded-lg border border-[#3fa3f633] bg-white text-[#00213e] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+        <div className="w-full max-w-md p-8 rounded-3xl shadow-2xl backdrop-blur-sm border border-[#3fa3f633] bg-white">
+          <div className="text-center mb-8">
+            <div className="p-4 rounded-2xl inline-block mb-4 bg-gradient-to-br from-[#fcda49] to-[#3fa3f6]">
+              <GraduationCap className="h-8 w-8 text-[#00213e]" />
             </div>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Name Field */}
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-dark-blue">Name</Label>
+            <h1 className="font-heading font-bold mb-2 text-[28px] text-[#00213e]">
+              Student Registration
+            </h1>
+            <p className="text-base text-[#00213e]/70">
+              Create your student account
+            </p>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-[#00213e] text-base">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className={`bg-[#feefad] rounded-lg border-2 text-dark-blue text-base transition-all duration-300 focus:shadow-lg ${
+                  errors.name ? 'border-red-500' : 'border-[#3fa3f64d] focus:border-sky-blue'
+                }`}
+                placeholder="Enter your first name"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-small">{errors.name}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="surname" className="text-dark-blue">Surname</Label>
+              <Input
+                id="surname"
+                type="text"
+                value={formData.surname}
+                onChange={(e) => handleInputChange('surname', e.target.value)}
+                className={`bg-[#feefad] rounded-lg border-2 text-dark-blue text-base transition-all duration-300 focus:shadow-lg ${
+                  errors.surname ? 'border-red-500' : 'border-[#3fa3f64d] focus:border-sky-blue'
+                }`}
+                placeholder="Enter your last name"
+              />
+              {errors.surname && (
+                <p className="text-red-500 text-small">{errors.surname}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetScore" className="text-dark-blue">Target Score</Label>
+              <Input
+                id="targetScore"
+                type="number"
+                value={formData.targetScore}
+                onChange={(e) => handleInputChange('targetScore', parseFloat(e.target.value))}
+                className={`bg-[#feefad] rounded-lg border-2 text-dark-blue text-base transition-all duration-300 focus:shadow-lg ${
+                  errors.targetScore ? 'border-red-500' : 'border-[#3fa3f64d] focus:border-sky-blue'
+                }`}
+                placeholder="Enter your target score (400-1600)"
+              />
+              {errors.targetScore && (
+                <p className="text-red-500 text-small">{errors.targetScore}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-dark-blue">Email Address</Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                className={`bg-[#feefad] rounded-lg border-2 text-dark-blue text-base transition-all duration-300 focus:shadow-lg ${
+                  errors.email ? 'border-red-500' : 'border-[#3fa3f64d] focus:border-sky-blue'
+                }`}
+                placeholder="Enter your email address"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-small">{errors.email}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-dark-blue">Password</Label>
+              <div className="relative">
                 <Input
-                  id="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  className={`bg-white border-2 text-dark-blue placeholder:text-dark-blue/50 ${
-                    errors.name ? 'border-red-500' : 'border-sky-blue/30 focus:border-sky-blue'
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password}
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  className={`bg-[#feefad] rounded-lg border-2 text-dark-blue text-base transition-all duration-300 focus:shadow-lg ${
+                    errors.password ? 'border-red-500' : 'border-[#3fa3f64d] focus:border-sky-blue'
                   }`}
-                  placeholder="Enter your first name"
+                  placeholder="Create a secure password"
                 />
-                {errors.name && (
-                  <p className="text-red-500 text-small">{errors.name}</p>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-dark-blue/50 hover:text-dark-blue"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
-
-              {/* Surname Field */}
-              <div className="space-y-2">
-                <Label htmlFor="surname" className="text-dark-blue">Surname</Label>
+              {errors.password && (
+                <p className="text-red-500 text-small">{errors.password}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="retypePassword" className="text-dark-blue">Retype Password</Label>
+              <div className="relative">
                 <Input
-                  id="surname"
-                  type="text"
-                  value={formData.surname}
-                  onChange={(e) => handleInputChange('surname', e.target.value)}
-                  className={`bg-white border-2 text-dark-blue placeholder:text-dark-blue/50 ${
-                    errors.surname ? 'border-red-500' : 'border-sky-blue/30 focus:border-sky-blue'
+                  id="retypePassword"
+                  type={showRetypePassword ? 'text' : 'password'}
+                  value={formData.retypePassword}
+                  onChange={(e) => handleInputChange('retypePassword', e.target.value)}
+                  className={`bg-[#feefad] rounded-lg border-2 text-dark-blue text-base transition-all duration-300 focus:shadow-lg ${
+                    errors.retypePassword ? 'border-red-500' : 'border-[#3fa3f64d] focus:border-sky-blue'
                   }`}
-                  placeholder="Enter your last name"
+                  placeholder="Confirm your password"
                 />
-                {errors.surname && (
-                  <p className="text-red-500 text-small">{errors.surname}</p>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowRetypePassword(!showRetypePassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-dark-blue/50 hover:text-dark-blue"
+                >
+                  {showRetypePassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
-
-              {/* Target Score Field */}
-              <div className="space-y-2">
-                <Label htmlFor="targetScore" className="text-dark-blue">Target Score</Label>
-                <Input
-                  id="targetScore"
-                  type="number"
-                  value={formData.targetScore}
-                  onChange={(e) => handleInputChange('targetScore', parseFloat(e.target.value))}
-                  className={`bg-white border-2 text-dark-blue placeholder:text-dark-blue/50 ${
-                    errors.targetScore ? 'border-red-500' : 'border-sky-blue/30 focus:border-sky-blue'
-                  }`}
-                  placeholder="Enter your target score (400-1600)"
-                />
-                {errors.targetScore && (
-                  <p className="text-red-500 text-small">{errors.targetScore}</p>
-                )}
-              </div>
-
-              {/* Email Field */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-dark-blue">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className={`bg-white border-2 text-dark-blue placeholder:text-dark-blue/50 ${
-                    errors.email ? 'border-red-500' : 'border-sky-blue/30 focus:border-sky-blue'
-                  }`}
-                  placeholder="Enter your email address"
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-small">{errors.email}</p>
-                )}
-              </div>
-
-              {/* Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-dark-blue">Password</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange('password', e.target.value)}
-                    className={`bg-white border-2 text-dark-blue placeholder:text-dark-blue/50 pr-10 ${
-                      errors.password ? 'border-red-500' : 'border-sky-blue/30 focus:border-sky-blue'
-                    }`}
-                    placeholder="Create a secure password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-dark-blue/50 hover:text-dark-blue"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {errors.password && (
-                  <p className="text-red-500 text-small">{errors.password}</p>
-                )}
-              </div>
-
-              {/* Retype Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="retypePassword" className="text-dark-blue">Retype Password</Label>
-                <div className="relative">
-                  <Input
-                    id="retypePassword"
-                    type={showRetypePassword ? 'text' : 'password'}
-                    value={formData.retypePassword}
-                    onChange={(e) => handleInputChange('retypePassword', e.target.value)}
-                    className={`bg-white border-2 text-dark-blue placeholder:text-dark-blue/50 pr-10 ${
-                      errors.retypePassword ? 'border-red-500' : 'border-sky-blue/30 focus:border-sky-blue'
-                    }`}
-                    placeholder="Confirm your password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowRetypePassword(!showRetypePassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-dark-blue/50 hover:text-dark-blue"
-                  >
-                    {showRetypePassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {errors.retypePassword && (
-                  <p className="text-red-500 text-small">{errors.retypePassword}</p>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <Button 
-                type="submit" 
-                className="w-full bg-sky-blue hover:bg-sky-blue/90 text-white h-12 px-6"
-              >
-                Create Account
-              </Button>
-
-              {/* Additional Info */}
-              <p className="text-small text-dark-blue/70 text-center">
-                By creating an account, you agree to our terms and conditions.
-              </p>
-            </form>
-          </CardContent>
-        </Card>
+              {errors.retypePassword && (
+                <p className="text-red-500 text-small">{errors.retypePassword}</p>
+              )}
+            </div>
+            <Button 
+              type="submit" 
+              className="w-full bg-sky-blue hover:bg-sky-blue/90 text-white h-12 px-6"
+            >
+              Create Account
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   )

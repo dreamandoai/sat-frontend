@@ -1,17 +1,19 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Label } from '../../components/Label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/Card';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, GraduationCap, Eye, EyeOff } from 'lucide-react';
 import { authService } from "../../services/authService";
 import { setCredentials } from '../../store/authSlice';
+import type { RootState } from '../../store';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ const Login: React.FC = () => {
     try {
       const response = await authService.login({ email, password });
       dispatch(setCredentials(response));
-      navigate('/student-portal');
+      navigate('/student/portal');
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -28,174 +30,100 @@ const Login: React.FC = () => {
 
   const handleRegisterClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigate("/register");
+    navigate("/student/register");
   };
 
+  useEffect(() => {
+    if(isAuthenticated) {
+      navigate("/student/portal");
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen bg-light-yellow">
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-full max-w-md">
-          <Card className="shadow-lg border-2" style={{ borderColor: 'rgba(0, 33, 62, 0.1)', borderRadius: '8px' }}>
-            <CardHeader className="text-center space-y-4" style={{ backgroundColor: '#b2dafb', borderRadius: '8px 8px 0 0' }}>
-              <div className="flex items-center justify-between">
-                <Button
+    <div className="min-h-screen bg-gradient-to-br from-[#b2dafb] via-[#feefad] to-[#b2dafbcc]">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12">
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-6 left-6 p-2 rounded-lg border border-[#3fa3f633] bg-white text-[#00213e] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </button>
+        <div className="w-full max-w-md p-8 rounded-3xl shadow-2xl backdrop-blur-sm border border-[#3fa3f633] bg-white">
+          <div className="text-center mb-8">
+            <div className="p-4 rounded-2xl inline-block mb-4 bg-gradient-to-br from-[#3fa3f6] to-[#fcda49]">
+              <GraduationCap className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="font-heading font-bold mb-2 text-[28px] text-[#00213e]">
+              Student Login
+            </h1>
+            <p className="text-base text-[#00213e]/70">
+              Sign in to access your student portal
+            </p>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label
+                htmlFor="email"
+                className="text-[#00213e] text-base"
+              >
+                Email Address
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="rounded-lg border-2 border-[#3fa3f64d] bg-[#feefad] text-[#00213e] h-12 text-base transition-all duration-300 focus:shadow-lg"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="password"
+                className="text-[#00213e] text-base"
+              >
+                Password
+              </Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="rounded-lg border-2 border-[#3fa3f64d] bg-[#feefad] text-[#00213e] h-12 text-base pr-12 transition-all duration-300 focus:shadow-lg"
+                />
+                <button
                   type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="text-dark-blue hover:text-sky-blue hover:bg-white/20 p-2"
-                  onClick={() => navigate(-1)}
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded text-[#00213e]/60 transition-colors"
                 >
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-                <div className="flex-1" />
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
               </div>
-              <CardTitle 
-                style={{ 
-                  fontFamily: 'Montserrat, sans-serif', 
-                  fontWeight: 700, 
-                  fontSize: '36px',
-                  color: '#00213e',
-                  margin: 0 
-                }}
+            </div>
+            <Button
+              type="submit"
+              className="w-full h-12 px-6 py-4 text-base font-medium rounded-lg shadow-lg bg-[#3fa3f6] text-white transition-all duration-300 hover:shadow-xl disabled:opacity-50"
+            >
+              Sign In
+            </Button>
+          </form>
+          <div className="mt-6 text-center">
+            <p className="text-sm text-[#00213e]/60">
+              Don&apos;t have an account?{' '}
+              <button
+                onClick={handleRegisterClick}
+                className="font-medium text-[#3fa3f6] hover:underline transition-colors"
               >
-                Welcome Back
-              </CardTitle>
-              <CardDescription
-                style={{ 
-                  fontFamily: 'Poppins, sans-serif', 
-                  fontSize: '18px',
-                  color: '#00213e',
-                  margin: 0 
-                }}
-              >
-                Sign in to your account to continue
-              </CardDescription>
-            </CardHeader>
-            
-            <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label 
-                    htmlFor="email"
-                    style={{ 
-                      fontFamily: 'Poppins, sans-serif', 
-                      fontSize: '16px',
-                      color: '#00213e',
-                      fontWeight: 400
-                    }}
-                  >
-                    Email Address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-12"
-                    style={{ 
-                      borderRadius: '8px',
-                      border: '2px solid rgba(0, 33, 62, 0.2)',
-                      backgroundColor: '#ffffff',
-                      fontFamily: 'Poppins, sans-serif',
-                      fontSize: '16px',
-                      color: '#00213e',
-                      padding: '0 16px'
-                    }}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label 
-                    htmlFor="password"
-                    style={{ 
-                      fontFamily: 'Poppins, sans-serif', 
-                      fontSize: '16px',
-                      color: '#00213e',
-                      fontWeight: 400
-                    }}
-                  >
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="h-12"
-                    style={{ 
-                      borderRadius: '8px',
-                      border: '2px solid rgba(0, 33, 62, 0.2)',
-                      backgroundColor: '#ffffff',
-                      fontFamily: 'Poppins, sans-serif',
-                      fontSize: '16px',
-                      color: '#00213e',
-                      padding: '0 16px'
-                    }}
-                  />
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  className="w-full h-12"
-                  style={{ 
-                    backgroundColor: '#3fa3f6',
-                    color: '#ffffff',
-                    borderRadius: '8px',
-                    fontFamily: 'Poppins, sans-serif',
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    border: 'none',
-                    padding: '16px 24px'
-                  }}
-                >
-                  Sign In
-                </Button>
-              </form>
-            </CardContent>
-            
-            <CardFooter className="flex flex-col space-y-4 text-center">
-              <div className="text-sm">
-                <a 
-                  href="#" 
-                  className="hover:underline"
-                  style={{ 
-                    color: '#3fa3f6',
-                    fontFamily: 'Poppins, sans-serif',
-                    fontSize: '14px'
-                  }}
-                >
-                  Forgot your password?
-                </a>
-              </div>
-              
-              <div className="flex items-center justify-center space-x-2">
-                <small style={{ 
-                  fontFamily: 'Poppins, sans-serif',
-                  fontSize: '14px',
-                  color: '#00213e'
-                }}>
-                  Don't have an account?
-                </small>
-                <a 
-                  href="#" 
-                  className="hover:underline"
-                  onClick={handleRegisterClick}
-                  style={{ 
-                    color: '#3fa3f6',
-                    fontFamily: 'Poppins, sans-serif',
-                    fontSize: '14px',
-                    fontWeight: 500
-                  }}
-                >
-                  Sign up
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
+                Register here
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </div>

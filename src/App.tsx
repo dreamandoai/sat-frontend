@@ -15,12 +15,15 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="/student-portal" element={<StudentPortal />}></Route>
-            <Route path="/diagnostic" element={<DiagnosticTest />} ></Route>
+          <Route path="/" element={<Dashboard />}>
+          </Route>
+          <Route path="student">
+            <Route path="login" element={<Login />}></Route>
+            <Route path="register" element={<Register />}></Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="portal" element={<StudentPortal />}></Route>
+              <Route path="diagnostic" element={<DiagnosticTest />} ></Route>
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

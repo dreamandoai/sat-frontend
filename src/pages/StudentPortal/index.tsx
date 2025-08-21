@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import Navbar from '../../layouts/Navbar';
 import { BookOpen, Brain, Calendar, FileText, GraduationCap, User, LogOut } from 'lucide-react';
 import type { RootState } from "../../store";
+import { authService } from '../../services/authService';
 import { logout } from '../../store/authSlice';
 
 const portalOptions = [
@@ -54,11 +55,12 @@ const StudentPortal: React.FC = () => {
   const handleOptionClick = (option: string) => {
     if (option === "Take Your Diagnostic Test Now") {
       // Navigate to internal diagnostic test
-      navigate("/diagnostic");
+      navigate("/student/diagnostic");
     }
   }
 
   const handleLogout = () => {
+    authService.logout();
     dispatch(logout());
   }
 
