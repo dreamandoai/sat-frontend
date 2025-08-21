@@ -4,6 +4,8 @@ import type { RootState } from '../../store';
 import { Button } from '../../components/Button';
 import { Card, CardDescription, CardHeader, CardTitle } from '../../components/Card';
 import { Clock, BookOpen, Calculator, Award, ChevronRight, Brain, Users, GraduationCap } from 'lucide-react'
+import { useMemo } from 'react';
+import type { Topic } from '../../types/diagnostic';
 
 interface DiagnosticHomeScreenProps {
   onStartTest: () => void
@@ -11,6 +13,12 @@ interface DiagnosticHomeScreenProps {
 
 const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
   const topics = useSelector((state: RootState) => state.diagnostic.topics);
+  const rwTopics = useMemo(() => {
+    return topics && topics.filter((t: Topic) => t.section === "RW");
+  }, [topics]);
+  const mathTopics = useMemo(() => {
+    return topics && topics.filter((t: Topic) => t.section === "Math");
+  }, [topics]);
 
   return (
     <div>
@@ -94,14 +102,14 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
                   Reading and Writing
                 </CardTitle>
                 <div className="text-2xl font-bold mb-2 text-sky-blue">
-                  28 Questions
+                  {rwTopics && rwTopics.length * 2} Questions
                 </div>
                 <CardDescription className="text-dark-blue">
-                  14 Question types: Adaptive difficulty (Medium → Hard/Easy) for comprehensive assessment across all SAT reading and writing skills.
+                  {rwTopics && rwTopics.length} Question types: Adaptive difficulty (Medium → Hard/Easy) for comprehensive assessment across all SAT reading and writing skills.
                 </CardDescription>
                 <div className="mt-4 p-3 rounded-lg bg-sky-blue">
                   <span className="font-medium text-white">
-                    ⏱ 32 minutes
+                    ⏱ {rwTopics && rwTopics.length * 3} minutes
                   </span>
                 </div>
               </CardHeader>
@@ -116,14 +124,14 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
                   Math
                 </CardTitle>
                 <div className="text-2xl font-bold mb-2 text-sky-blue">
-                  38 Questions
+                  {mathTopics && mathTopics.length * 2} Questions
                 </div>
                 <CardDescription className="text-dark-blue">
-                  19 Question types: Demonstrate your mathematical reasoning and problem-solving abilities across algebra, geometry, and data analysis.
+                  {mathTopics && mathTopics.length} Question types: Demonstrate your mathematical reasoning and problem-solving abilities across algebra, geometry, and data analysis.
                 </CardDescription>
                 <div className="mt-4 p-3 rounded-lg bg-sky-blue">
                   <span className="font-medium text-white">
-                    ⏱ 55 minutes
+                    ⏱ {mathTopics && mathTopics.length * 3} minutes
                   </span>
                 </div>
               </CardHeader>

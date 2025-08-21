@@ -14,7 +14,7 @@ export const diagnosticService = {
 
   getQuestion: async (topic_id: string, answer_index: number) => {
     try {
-      const response = await apiService.get<AdaptiveQuestion>(`/diagnostic/question/${topic_id}/${answer_index}`);
+      const response = await apiService.get<AdaptiveQuestion>(`/diagnostic/submit-answer/${topic_id}/${answer_index}`);
       return response;
     } catch(error) {
       throw error as ApiError

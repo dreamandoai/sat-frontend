@@ -1,13 +1,10 @@
-import React from "react";
-import { useNavigate } from 'react-router'
-import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 import { Button } from '../../components/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/Card';
 import Navbar from '../../layouts/Navbar';
-import { BookOpen, Brain, Calendar, FileText, GraduationCap, User, LogOut } from 'lucide-react';
+import { BookOpen, Brain, Calendar, FileText, GraduationCap } from 'lucide-react';
 import type { RootState } from "../../store";
-import { authService } from '../../services/authService';
-import { logout } from '../../store/authSlice';
 
 const portalOptions = [
   {
@@ -49,7 +46,6 @@ const portalOptions = [
 
 const StudentPortal: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
 
   const handleOptionClick = (option: string) => {
@@ -59,52 +55,16 @@ const StudentPortal: React.FC = () => {
     }
   }
 
-  const handleLogout = () => {
-    authService.logout();
-    dispatch(logout());
-  }
-
   return (
     <div className="min-h-screen bg-light-yellow">
       <Navbar />
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-sky-blue/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="bg-sky-blue rounded-full p-2">
-                <User className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-dark-blue">Welcome, {user?.first_name}!</h1>
-                <p className="text-small text-dark-blue opacity-70">
-                  Target Score: {user?.target_score}
-                </p>
-              </div>
-            </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-sky-blue text-sky-blue hover:bg-sky-blue hover:text-white"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
         <div className="mb-8">
           <h2 className="text-dark-blue mb-2">Your SAT Journey Starts Here</h2>
           <p className="text-dark-blue opacity-80 max-w-2xl">
             Welcome to your personalized SAT preparation portal. Choose from the options below to begin your path to success.
           </p>
         </div>
-
-        {/* Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {portalOptions.map((option, index) => {
             const IconComponent = option.icon
@@ -139,8 +99,6 @@ const StudentPortal: React.FC = () => {
             )
           })}
         </div>
-
-        {/* Quick Stats */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="bg-white shadow-lg">
             <CardContent className="pt-6">
@@ -155,7 +113,6 @@ const StudentPortal: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-
           <Card className="bg-white shadow-lg">
             <CardContent className="pt-6">
               <div className="text-center">
@@ -167,7 +124,6 @@ const StudentPortal: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-
           <Card className="bg-white shadow-lg">
             <CardContent className="pt-6">
               <div className="text-center">

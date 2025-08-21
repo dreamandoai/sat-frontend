@@ -1,26 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from "react-router";
-import { Button } from '../../components/Button';
 import Navbar from '../../layouts/Navbar';
+import Header from "../../layouts/Header";
 import type { TestSection, Topic } from "../../types/diagnostic";
-import { ArrowLeft, LogOut, User } from 'lucide-react';
 import type { AppDispatch, RootState } from '../../store';
 
 import DiagnosticHomeScreen from './HomeScreen';
 import DiagnosticSectionIntro from "./SectionIntro";
 import DiagnosticTestScreen from "./TestScreen";
 import { DiagnosticSectionTransition } from './SectionTransition';
-import { logout } from '../../store/authSlice';
 import { setTopics } from '../../store/diagnosticSlice';
 import { diagnosticService } from '../../services/diagnosticService';
 import { startTest } from '../../services/timerService';
 
 
 const DiagnosticTest: React.FC = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.auth.user);
   const topics = useSelector((state: RootState) => state.diagnostic.topics);
   const [currentScreen, setCurrentScreen] = useState<"home" | "rw-intro" | "test" | "transition" | "math-intro" | "results">("home");
   const [currentSection, setCurrentSection] = useState<TestSection>("RW");
@@ -71,80 +66,33 @@ const DiagnosticTest: React.FC = () => {
     setCurrentScreen("math-intro");
   }
 
-  const handleLogout = () => {
-    dispatch(logout());
-  }
-
   return (
     <div className="min-h-screen bg-[#feefad]" style={{ fontFamily: "Poppins, sans-serif" }}>
-      {/* Navigation Bar */}
       <Navbar />
-
-      {/* Header with user info and back button */}
-      <header className="bg-white shadow-sm border-b border-sky-blue/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <Button
-                onClick={() => navigate(-1)}
-                variant="ghost"
-                size="sm"
-                className="text-dark-blue hover:text-sky-blue hover:bg-sky-blue/10 p-2"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Portal
-              </Button>
-              <div className="bg-sky-blue rounded-full p-2">
-                <User className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-dark-blue">{user?.first_name} {user?.last_name}</h1>
-                <p className="text-small text-dark-blue opacity-70">
-                  Target Score: {user?.target_score}
-                </p>
-              </div>
-            </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              className="border-sky-blue text-sky-blue hover:bg-sky-blue hover:text-white"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      {/* Screen Content */}
+      <Header />
       {currentScreen === "home" && (
         <DiagnosticHomeScreen onStartTest={handleStartTest} />
       )}
-
       {currentScreen === "rw-intro" && (
         <DiagnosticSectionIntro
           section={currentSection}
           onStart={handleStartReadingWriting}
         />
       )}
-
       {currentScreen === "test" && (
         <DiagnosticTestScreen
           currentSection={currentSection}
         />
       )}
-
       {currentScreen === "math-intro" && (
         <DiagnosticSectionIntro
           section={currentSection}
           onStart={handleStartMath}
         />
       )}
-
       {currentScreen === "transition" && (
         <DiagnosticSectionTransition onContinue={handleContinueToMath} />
       )}
-
     </div>
   )
 }
