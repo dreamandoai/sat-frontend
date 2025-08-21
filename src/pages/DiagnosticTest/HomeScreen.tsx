@@ -139,7 +139,7 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
             <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-white">
               <CardHeader className="text-center pb-4">
                 <div className="w-16 h-16 rounded-lg flex items-center justify-center mb-6 mx-auto shadow-lg bg-dark-blue">
-                  <GraduationCap className="w-8 h-8 text-white" />
+                  <GraduationCap className="w-8 h-8" />
                 </div>
                 <CardTitle className="text-dark-blue">
                   Tailor-made Classes
