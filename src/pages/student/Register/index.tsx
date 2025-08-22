@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router';
-import { Button } from '../../components/Button'
-import { Input } from '../../components/Input'
-import { Label } from '../../components/Label'
+import { Button } from '../../../components/Button'
+import { Input } from '../../../components/Input'
+import { Label } from '../../../components/Label'
 import { ArrowLeft, GraduationCap, EyeOff, Eye } from 'lucide-react';
-import { authService } from "../../services/authService";
-import type { RegisterCredentials, RegisterResponse } from '../../types/auth';
+import { authService } from "../../../services/authService";
+import type { RegisterCredentials, RegisterResponse } from "../../../types/auth";
 
 interface FormData {
   name: string

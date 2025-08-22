@@ -1,6 +1,6 @@
-import { Button } from "../../components/Button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/Card";
-import { Badge } from "../../components/Badge";
+import { Button } from "../../../components/Button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/Card";
+import { Badge } from "../../../components/Badge";
 import { Award, Users, Calendar, CheckCircle, BookOpen } from 'lucide-react'
 
 interface DiagnosticResultsScreenProps {

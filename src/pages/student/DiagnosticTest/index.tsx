@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import Navbar from '../../layouts/Navbar';
-import Header from "../../layouts/Header";
-import type { TestSection, Topic } from "../../types/diagnostic";
-import type { AppDispatch, RootState } from '../../store';
+import Navbar from "../../../layouts/Navbar";
+import Header from "../../../layouts/Header";
 
 import DiagnosticHomeScreen from './HomeScreen';
 import DiagnosticSectionIntro from "./SectionIntro";
 import DiagnosticTestScreen from "./TestScreen";
 import { DiagnosticSectionTransition } from './SectionTransition';
-import { setTopics } from '../../store/diagnosticSlice';
-import { diagnosticService } from '../../services/diagnosticService';
-import { startTest } from '../../services/timerService';
+import type { TestSection, Topic } from "../../../types/diagnostic";
+import type { AppDispatch, RootState } from '../../../store';
+import { setTopics } from '../../../store/diagnosticSlice';
+import { diagnosticService } from '../../../services/diagnosticService';
+import { startTest } from '../../../services/timerService';
 
 
 const DiagnosticTest: React.FC = () => {

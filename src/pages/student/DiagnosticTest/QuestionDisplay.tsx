@@ -1,12 +1,12 @@
-import React from 'react';
-import { Badge } from '../../components/Badge';
-import type { AdaptiveQuestion, Topic } from '../../types/diagnostic';
+import React from "react";
+import { Badge } from "../../../components/Badge";
+import type { AdaptiveQuestion, Topic } from '../../../types/diagnostic';
 import { 
   formatCrossTextConnections, 
   formatRhetoricalSynthesis, 
   formatPassageWithBackgroundInfo, 
   formatUnderlinedSentence 
-} from '../../utils/formatters'
+} from "../../../utils/formatters";
 
 interface QuestionDisplayProps {
   question: AdaptiveQuestion

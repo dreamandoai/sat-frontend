@@ -1,7 +1,7 @@
 import { BookOpen, Users } from "lucide-react";
 import { useNavigate } from "react-router";
 
-const Dashboard: React.FC = () => {
+const RoleSelection: React.FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -27,6 +27,7 @@ const Dashboard: React.FC = () => {
               </h2>
               <button
                 className="w-full text-white font-medium py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 transform group-hover:scale-105 bg-gradient-to-r from-[#3fa3f6] to-[#b2dafb] hover:from-[#b2dafb] hover:to-[#3fa3f6]"
+                onClick={() => navigate("/student/login")}
               >
                 Click here!
               </button>
@@ -34,6 +35,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div
             className="group relative backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-[#fcda494d] cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105 bg-[#b2dafb]"
+            onClick={() => navigate("/teacher/login")}
           >
             <div className="relative z-10 text-center">
               <div className="p-6 rounded-2xl inline-block mb-6 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-br from-[#fcda49] to-[#feefad]">
@@ -44,6 +46,7 @@ const Dashboard: React.FC = () => {
               </h2>
               <button
                 className="w-full font-medium py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 transform group-hover:scale-105 bg-gradient-to-r from-[#fcda49] to-[#feefad] hover:from-[#feefad] hover:to-[#fcda49] text-[#00213e]"
+                onClick={() => navigate("/teacher/login")}
               >
                 Click here!
               </button>
@@ -55,4 +58,4 @@ const Dashboard: React.FC = () => {
   )
 }
 
-export default Dashboard;
+export default RoleSelection;

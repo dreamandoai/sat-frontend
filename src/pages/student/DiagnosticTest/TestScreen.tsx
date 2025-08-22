@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../../store';
-import { fetchRemaining } from '../../services/timerService';
-import { setRemaining } from '../../store/timerSlice';
-import { setQuestion } from '../../store/diagnosticSlice';
-import { diagnosticService } from '../../services/diagnosticService';
-import type { TestSection, Topic } from '../../types/diagnostic';
+import type { AppDispatch, RootState } from '../../../store';
+import { fetchRemaining } from '../../../services/timerService';
+import { setRemaining } from '../../../store/timerSlice';
+import { setQuestion } from '../../../store/diagnosticSlice';
+import { diagnosticService } from '../../../services/diagnosticService';
+import type { TestSection, Topic } from '../../../types/diagnostic';
 
-import { Button } from '../../components/Button';
-import { Progress } from '../../components/Progress';
-import { Badge } from '../../components/Badge';
-import { Alert, AlertDescription } from '../../components/Alert';
+import { Button } from '../../../components/Button';
+import { Progress } from '../../../components/Progress';
+import { Badge } from '../../../components/Badge';
+import { Alert, AlertDescription } from '../../../components/Alert';
 import { Clock, ArrowRight, AlertTriangle, CheckCircle } from 'lucide-react'
 import QuestionDisplay from './QuestionDisplay';
-import { formatTime, formatSectionName, formatQuestionNumber } from '../../utils/formatters'
+import { formatTime, formatSectionName, formatQuestionNumber } from '../../../utils/formatters'
 
 interface DiagnosticTestScreenProps {
   currentSection: TestSection

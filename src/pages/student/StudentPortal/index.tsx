@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
-import { Button } from '../../components/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/Card';
-import Navbar from '../../layouts/Navbar';
-import { BookOpen, Brain, Calendar, FileText, GraduationCap } from 'lucide-react';
-import type { RootState } from "../../store";
+import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { Button } from "../../../components/Button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/Card";
+import Navbar from "../../../layouts/Navbar";
+import { BookOpen, Brain, Calendar, FileText, GraduationCap } from "lucide-react";
+import type { RootState } from "../../../store";
 
 const portalOptions = [
   {

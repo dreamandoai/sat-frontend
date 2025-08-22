@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../store';
+import type { RootState } from '../../../store';
 
-import { Button } from '../../components/Button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/Card';
-import { Badge } from '../../components/Badge';
+import { Button } from '../../../components/Button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../../components/Card';
+import { Badge } from '../../../components/Badge';
 import { BookOpen, Calculator, ExternalLink, Clock, HelpCircle, ChevronRight } from 'lucide-react'
-import type { TestSection, Topic } from '../../types/diagnostic'
+import type { TestSection, Topic } from '../../../types/diagnostic'
 import { useMemo } from 'react';
 
 interface DiagnosticSectionIntroProps {

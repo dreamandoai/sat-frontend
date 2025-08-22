@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
-import { Label } from '../../components/Label';
+import { Button } from '../../../components/Button';
+import { Input } from '../../../components/Input';
+import { Label } from '../../../components/Label';
 import { ArrowLeft, GraduationCap, Eye, EyeOff } from 'lucide-react';
-import { authService } from "../../services/authService";
-import { setCredentials } from '../../store/authSlice';
-import type { RootState } from '../../store';
+import { authService } from "../../../services/authService";
+import { setCredentials } from '../../../store/authSlice';
+import type { RootState } from '../../../store';
 
 const Login: React.FC = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);

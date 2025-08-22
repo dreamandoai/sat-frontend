@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../store';
+import type { RootState } from '../../../store';
 
-import { Button } from '../../components/Button';
-import { Card, CardDescription, CardHeader, CardTitle } from '../../components/Card';
+import { Button } from '../../../components/Button';
+import { Card, CardDescription, CardHeader, CardTitle } from '../../../components/Card';
 import { Clock, BookOpen, Calculator, Award, ChevronRight, Brain, Users, GraduationCap } from 'lucide-react'
 import { useMemo } from 'react';
-import type { Topic } from '../../types/diagnostic';
+import type { Topic } from '../../../types/diagnostic';
 
 interface DiagnosticHomeScreenProps {
   onStartTest: () => void

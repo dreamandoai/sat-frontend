@@ -2,12 +2,14 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { Provider } from "react-redux";
 import { store } from './store'
 
-import Dashboard from "./pages/Dashboard";
-import StudentPortal from "./pages/StudentPortal";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import RoleSelection from "./pages/RoleSelection";
+import StudentPortal from "./pages/student/StudentPortal";
+import StudentLogin from "./pages/student/Login";
+import StudentRegister from "./pages/student/Register";
+import TeacherLogin from "./pages/teacher/Login";
+import TeacherRegister from "./pages/teacher/Register";
 import PrivateRoute from "./layouts/PrivateRoute";
-import DiagnosticTest from "./pages/DiagnosticTest";
+import DiagnosticTest from "./pages/student/DiagnosticTest";
 
 function App() {
 
@@ -15,15 +17,18 @@ function App() {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />}>
-          </Route>
+          <Route path="/" element={<RoleSelection />} /> 
           <Route path="student">
-            <Route path="login" element={<Login />}></Route>
-            <Route path="register" element={<Register />}></Route>
+            <Route path="login" element={<StudentLogin />} />
+            <Route path="register" element={<StudentRegister />} />
             <Route element={<PrivateRoute />}>
-              <Route path="portal" element={<StudentPortal />}></Route>
-              <Route path="diagnostic" element={<DiagnosticTest />} ></Route>
+              <Route path="portal" element={<StudentPortal />} />
+              <Route path="diagnostic" element={<DiagnosticTest />} />
             </Route>
+          </Route>
+          <Route path="teacher">
+            <Route path="login" element={<TeacherLogin />} />
+            <Route path="register" element={<TeacherRegister />} />
           </Route>
         </Routes>
       </BrowserRouter>
