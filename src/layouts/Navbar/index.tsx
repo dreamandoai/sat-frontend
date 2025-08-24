@@ -1,16 +1,17 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Navbar: React.FC = () => {
   return (
     <header className="bg-[#b2dafb] w-full flex justify-between items-center px-6 py-4 border-b shadow-sm">
       {/* Logo */}
-      <a href="/en/home" className="flex items-center">
+      <Link to="/student/portal" className="flex items-center">
         <img
           src="https://images.squarespace-cdn.com/content/v1/681b8ed9160121545413f2ac/ba73ff61-d1c9-4b57-b8ef-c0c43f9109bb/LogoExtended-Black%281%29.png"
           alt="Dreamando Logo"
           className="h-12 w-auto object-contain"
         />
-      </a>
+      </Link>
 
       {/* Nav Links */}
       <nav 
@@ -21,8 +22,8 @@ const Navbar: React.FC = () => {
           fontWeight: 500
         }}
       >
-        <a 
-          href="/en/home" 
+        <Link
+          to="/student/portal" 
           className="hover:underline underline-offset-4 transition-all duration-200"
           style={{
             color: '#00213e',
@@ -32,7 +33,7 @@ const Navbar: React.FC = () => {
           }}
         >
           Home
-        </a>
+        </Link>
         <a 
           href="/en/about" 
           className="hover:underline underline-offset-4 transition-all duration-200"

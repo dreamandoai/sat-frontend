@@ -9,10 +9,10 @@ interface DiagnosticSectionTransitionProps {
   autoTransitionDelay?: number
 }
 
-export function DiagnosticSectionTransition({ 
+const DiagnosticSectionTransition: React.FC<DiagnosticSectionTransitionProps> = ({ 
   onContinue, 
   autoTransitionDelay = 5000 
-}: DiagnosticSectionTransitionProps) {
+}: DiagnosticSectionTransitionProps) => {
   const [countdown, setCountdown] = useState(Math.floor(autoTransitionDelay / 1000))
   const [progress, setProgress] = useState(0)
 
@@ -141,3 +141,5 @@ export function DiagnosticSectionTransition({
     </div>
   )
 }
+
+export default DiagnosticSectionTransition;

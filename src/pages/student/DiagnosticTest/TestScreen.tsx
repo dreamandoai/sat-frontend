@@ -25,8 +25,8 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   const [ selectedAnswer, setSelectedAnswer ] = useState<number | null>(null);
   const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
   const { topics, question } = useSelector((state: RootState) => state.diagnostic);
-  const isLowTime = remaining < 300 // 5 minutes
-  const isCriticalTime = remaining < 60 // 1 minute
+  const isLowTime = remaining > 60 && remaining < 300 // 5 minutes
+  const isCriticalTime = remaining > 0 && remaining < 60 // 1 minute
 
   const topicLength = useMemo(() => {
     return topics && topics.filter((t: Topic) => t.section === currentSection).length
@@ -64,11 +64,21 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
     }
   };
 
+  const exitFullScreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(err => {
+        console.log("Exit fullscreen error:", err);
+      });
+    }
+  };
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'F11') {
       e.preventDefault();
       if (!document.fullscreenElement) {
         enterFullScreen();
+      } else {
+        exitFullScreen();
       }
     }
   };
@@ -76,9 +86,10 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   useEffect(() => {
     enterFullScreen();
     document.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
+      exitFullScreen();
     };
   }, []);
 
@@ -105,6 +116,14 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
       handleGetQuestion(selectedTopic.id, -1);
     }
   }, [selectedTopic, questionIndex, handleGetQuestion]);
+
+  useEffect(() => {
+    if(topicLength) {
+      if (questionIndex === topicLength * 2) {
+        dispatch(setRemaining(0));
+      }
+    }
+  }, [questionIndex, dispatch, topicLength]);
 
   if (!question) {
     return (
@@ -241,8 +260,8 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
               }`}
               style={{ height: '56px' }}
             >
-              <span className="font-medium text-large">Next Question</span>
-              <ArrowRight className="w-5 h-5" />
+              <span className="font-medium text-large">{topicLength && questionIndex === topicLength * 2 -1 ? "Finish" : "Next Question"}</span>
+              {topicLength && questionIndex < topicLength * 2 - 1 && <ArrowRight className="w-5 h-5" />}
             </Button>
           </div>
         </div>

@@ -5,7 +5,8 @@ import { startTest, fetchRemaining } from "../services/timerService";
 const initialState: TimerState = {
   remaining: 0,
   endTime: null,
-  isRunning: false
+  isRunning: false,
+  isTested: false,
 }
 
 const timerSlice = createSlice({
@@ -18,6 +19,9 @@ const timerSlice = createSlice({
         state.isRunning = false;
       }
     },
+    setIsTested: (state, action: PayloadAction<boolean>) => {
+      state.isTested = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(startTest.fulfilled, (state, action) => {
@@ -25,6 +29,7 @@ const timerSlice = createSlice({
       state.endTime = new Date(end_time).getTime();
       state.remaining = Math.floor((state.endTime - Date.now()) / 1000);
       state.isRunning = true;
+      state.isTested = true;
     });
     builder.addCase(fetchRemaining.fulfilled, (state, action) => {
       if (action.payload.error) {
@@ -40,5 +45,5 @@ const timerSlice = createSlice({
   },
 });
 
-export const { setRemaining } = timerSlice.actions;
+export const { setRemaining, setIsTested } = timerSlice.actions;
 export default timerSlice.reducer;

@@ -14,6 +14,7 @@ export interface TimerState {
   remaining: number;
   endTime: number | null;
   isRunning: boolean;
+  isTested: boolean;
 }
 
 export interface StartTestRequest {

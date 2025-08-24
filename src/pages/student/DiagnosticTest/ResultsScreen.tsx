@@ -1,21 +1,21 @@
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../store";
 import { Button } from "../../../components/Button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/Card";
 import { Badge } from "../../../components/Badge";
 import { Award, Users, Calendar, CheckCircle, BookOpen } from 'lucide-react'
 
-interface DiagnosticResultsScreenProps {
-  answers: { [key: string]: number }
-}
-
-export function DiagnosticResultsScreen({ answers }: DiagnosticResultsScreenProps) {
+const DiagnosticResultsScreen: React.FC = () => {
+  const topics = useSelector((state: RootState) => state.diagnostic.topics);
+  
+  const totalQuestions = useMemo(() => {
+    return topics && 2 * topics.length;
+  }, [topics]);
+  
   const openCalendlyInNewTab = () => {
     window.open('https://calendly.com/ciro-formisano-dreamando', '_blank')
   }
-
-  // Calculate completion stats
-  const totalQuestions = 66 // Total questions in the SAT diagnostic test (28 R&W + 38 Math)
-  const questionsAnswered = Object.keys(answers).length
-  const completionPercentage = questionsAnswered > 0 ? 100 : 0
 
   return (
     <div className="min-h-screen bg-white">
@@ -31,7 +31,7 @@ export function DiagnosticResultsScreen({ answers }: DiagnosticResultsScreenProp
           <div className="flex justify-center items-center gap-4 mb-6">
             <Badge variant="secondary" className="bg-light-yellow text-dark-blue border-0 px-4 py-2">
               <CheckCircle className="w-4 h-4 mr-2" />
-              {completionPercentage}% Complete
+              100% Complete
             </Badge>
             <Badge variant="outline" className="border-sky-blue text-sky-blue px-4 py-2">
               <BookOpen className="w-4 h-4 mr-2" />
@@ -87,3 +87,5 @@ export function DiagnosticResultsScreen({ answers }: DiagnosticResultsScreenProp
     </div>
   )
 }
+
+export default DiagnosticResultsScreen;
