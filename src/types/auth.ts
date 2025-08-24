@@ -3,13 +3,14 @@ export interface UserData {
   first_name: string;
   last_name: string;
   email: string;
-  role: "student" | "teacher" | "admin";
+  role: "student" | "teacher";
   target_score: number;
 }
 
 export interface LoginCredentials {
   email: string;
   password: string;
+  role: "student" | "teacher"
 }
 
 export interface LoginResponse {

@@ -10,7 +10,7 @@ import { setCredentials } from '../../../store/authSlice';
 import type { RootState } from '../../../store';
 
 const Login: React.FC = () => {
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -20,7 +20,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await authService.login({ email, password });
+      const response = await authService.login({ email, password, role: "student" });
       dispatch(setCredentials(response));
       navigate('/student/portal');
     } catch (error) {
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    if(isAuthenticated) {
+    if(isAuthenticated && user?.role === "student") {
       navigate("/student/portal");
     }
   }, []);
