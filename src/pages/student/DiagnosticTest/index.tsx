@@ -68,8 +68,12 @@ const DiagnosticTest: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#feefad]" style={{ fontFamily: "Poppins, sans-serif" }}>
-      <Navbar />
-      <Header />
+      {currentScreen !== "test" && (
+        <>
+          <Navbar />
+          <Header />
+        </>
+      )}
       {currentScreen === "home" && (
         <DiagnosticHomeScreen onStartTest={handleStartTest} />
       )}

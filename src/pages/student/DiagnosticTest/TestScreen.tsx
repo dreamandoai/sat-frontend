@@ -55,6 +55,33 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
     setSelectedAnswer(null);
   }
 
+  const enterFullScreen = () => {
+    const element = document.documentElement;
+    if (element.requestFullscreen) {
+      element.requestFullscreen().catch(err => {
+        console.log('Fullscreen error:', err);
+      });
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'F11') {
+      e.preventDefault();
+      if (!document.fullscreenElement) {
+        enterFullScreen();
+      }
+    }
+  };
+
+  useEffect(() => {
+    enterFullScreen();
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   useEffect(() => {
     let interval: NodeJS.Timeout | undefined;
     if (isRunning && endTime) {
@@ -68,11 +95,11 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
       if (interval) clearInterval(interval);
     };
   }, [isRunning, endTime, dispatch]);
-
+  
   useEffect(() => {
     dispatch(fetchRemaining());
   }, [dispatch]);
-
+  
   useEffect(() => {
     if (selectedTopic && questionIndex === 0) {
       handleGetQuestion(selectedTopic.id, -1);
@@ -95,7 +122,6 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#feefad' }}>
-      {/* Critical Time Alert */}
       {isCriticalTime && (
         <Alert className="border-red-200 bg-red-100 mx-4 mt-4 mb-0">
           <AlertTriangle className="h-4 w-4 text-red-600" />
@@ -104,8 +130,6 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
           </AlertDescription>
         </Alert>
       )}
-
-      {/* Header */}
       <div className="bg-white border-b border-sky-blue/10 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between flex-wrap gap-4">
@@ -177,8 +201,6 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
           </div>
         </div>
       </div>
-
-      {/* Low Time Warning */}
       {isLowTime && !isCriticalTime && (
         <Alert className="border-orange-200 bg-orange-50 mx-4 mt-4 mb-0">
           <Clock className="h-4 w-4 text-orange-600" />
@@ -187,8 +209,6 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
           </AlertDescription>
         </Alert>
       )}
-
-      {/* Question Content */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
         {selectedTopic && <QuestionDisplay
           question={question}
@@ -196,9 +216,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
           topic={selectedTopic}
           selectedAnswer={selectedAnswer}
         />}
-        {/* Navigation Section */}
-        <div className="mt-16 space-y-6">
-          {/* Answer Status */}
+        <div className="mt-4 space-y-1">
           <div className="text-center">
             {selectedAnswer !== null ? (
               <div className="inline-flex items-center gap-2 text-green-600 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
@@ -211,18 +229,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
               </div>
             )}
           </div>
-
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              {/* Section Indicator */}
-              <div className="hidden sm:flex items-center gap-2 text-small text-dark-blue opacity-70">
-                <span>Question {questionIndex + 1} of {topicLength && topicLength * 2}</span>
-                <span>•</span>
-                <span>{formatSectionName(currentSection)} Section</span>
-              </div>
-            </div>
-
+          <div className="flex justify-end items-center">
             <Button
               onClick={handleNext}
               disabled={selectedAnswer === null}
@@ -238,8 +245,6 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
               <ArrowRight className="w-5 h-5" />
             </Button>
           </div>
-
-
         </div>
       </div>
     </div>
