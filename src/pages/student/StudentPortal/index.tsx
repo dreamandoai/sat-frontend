@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import Navbar from "../../../layouts/Navbar";
 import { BookOpen, Brain, Calendar, FileText, GraduationCap } from "lucide-react";
 import type { RootState } from "../../../store";
+import Header from "../../../layouts/Header";
 
 const portalOptions = [
   {
@@ -58,6 +59,7 @@ const StudentPortal: React.FC = () => {
   return (
     <div className="min-h-screen bg-light-yellow">
       <Navbar />
+      <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h2 className="text-dark-blue mb-2">Your SAT Journey Starts Here</h2>

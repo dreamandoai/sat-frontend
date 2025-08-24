@@ -109,10 +109,11 @@ const Register: React.FC = () => {
           last_name: formData.surname,
           email: formData.email,
           password: formData.password,
+          role: "student",
           target_score: formData.targetScore 
         } as RegisterCredentials);
         if(response.status === "success") {
-          navigate('/login');
+          navigate('/student/login');
         }
       } catch (error) {
         console.error('Login failed:', error);

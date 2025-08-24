@@ -22,7 +22,8 @@ export interface RegisterCredentials {
   first_name: string;
   last_name: string;
   password: string;
-  target_score: number; 
+  target_score?: number;
+  role: "student" | "teacher"; 
 }
 
 export interface RegisterResponse {
