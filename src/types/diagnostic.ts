@@ -20,6 +20,14 @@ export type Topic = {
   section: TestSection;
 }
 
+export type SubmitAnswer = {
+  next_topic_id: string;
+  current_topic_id: string;
+  answer_index: number;
+  time_sec: number;
+  difficulty: DifficultyLevel;
+}
+
 export type AdaptiveQuestion = {
   section: TestSection;
   question: string;

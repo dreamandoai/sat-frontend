@@ -5,7 +5,7 @@ import { fetchRemaining } from '../../../services/timerService';
 import { setRemaining } from '../../../store/timerSlice';
 import { setQuestion } from '../../../store/diagnosticSlice';
 import { diagnosticService } from '../../../services/diagnosticService';
-import type { TestSection, Topic } from '../../../types/diagnostic';
+import type { DifficultyLevel, TestSection, Topic } from '../../../types/diagnostic';
 
 import { Button } from '../../../components/Button';
 import { Progress } from '../../../components/Progress';
@@ -23,6 +23,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   const dispatch = useDispatch<AppDispatch>();
   const [ questionIndex, setQuestionIndex ] = useState<number>(0);
   const [ selectedAnswer, setSelectedAnswer ] = useState<number | null>(null);
+  const [ timeSec, setTimeSec ] = useState<number>(0);
   const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
   const { topics, question } = useSelector((state: RootState) => state.diagnostic);
   const isLowTime = remaining > 60 && remaining < 300 // 5 minutes
@@ -38,9 +39,14 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
     return sectionTopics[Math.floor(questionIndex / 2)];
   }, [topics, currentSection, questionIndex]);
 
-  const handleGetQuestion = useCallback(async (topic_id: string, answer_index: number | null = null) => {
-    const finalAnswerIndex = answer_index !== null ? answer_index : -1;
-    const res = await diagnosticService.getQuestion(topic_id, finalAnswerIndex);
+  const handleGetQuestion = useCallback(async (next_id: string, topic_id: string, answer_index: number, time_sec: number, level: DifficultyLevel) => {
+    const res = await diagnosticService.getQuestion({
+      next_topic_id: next_id,
+      current_topic_id: topic_id, 
+      answer_index: answer_index,
+      time_sec: time_sec,
+      difficulty: level
+    });
     dispatch(setQuestion(res));
   }, [dispatch]);
 
@@ -49,9 +55,23 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   }
 
   const handleNext = async () => {
-    if (!question || !selectedTopic || selectedAnswer ===  null) return;
+    if (!question || !selectedTopic || selectedAnswer ===  null || !topics) return;
+    let nextId = selectedTopic.id;
     setQuestionIndex(prev => prev + 1);
-    await handleGetQuestion(selectedTopic.id, selectedAnswer);
+    if(question.difficulty !== "medium") {
+      const sectionTopics = topics.filter((t: Topic) => t.section === currentSection);
+      let nextTopic = null;
+      const topicIndex = Math.floor(questionIndex / 2) + 1
+      if(sectionTopics.length === topicIndex) {
+        nextTopic = sectionTopics.at(sectionTopics.length - 1);
+      } else {
+        nextTopic = sectionTopics.at(topicIndex);
+      }
+      if (!nextTopic) return;
+      nextId = nextTopic.id;
+    }
+    await handleGetQuestion(nextId, selectedTopic.id, selectedAnswer, timeSec, question.difficulty);
+    setTimeSec(0);
     setSelectedAnswer(null);
   }
 
@@ -100,6 +120,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
         const now = Date.now();
         const remainingSec = Math.floor((endTime - now) / 1000);
         dispatch(setRemaining(Math.max(remainingSec, 0)));
+        setTimeSec(prev => prev + 1);
       }, 1000);
     }
     return () => {
@@ -113,7 +134,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   
   useEffect(() => {
     if (selectedTopic && questionIndex === 0) {
-      handleGetQuestion(selectedTopic.id, -1);
+      handleGetQuestion(selectedTopic.id, selectedTopic.id, -1, 0, "medium");
     }
   }, [selectedTopic, questionIndex, handleGetQuestion]);
 

@@ -1,6 +1,6 @@
 import { apiService } from './api';
 import type { ApiError } from '../types/api';
-import type { AdaptiveQuestion, Topic } from '../types/diagnostic';
+import type { AdaptiveQuestion, Topic, SubmitAnswer } from '../types/diagnostic';
 
 export const diagnosticService = {
   getTopics: async () => {
@@ -12,9 +12,9 @@ export const diagnosticService = {
     }
   },
 
-  getQuestion: async (topic_id: string, answer_index: number) => {
+  getQuestion: async (answer: SubmitAnswer) => {
     try {
-      const response = await apiService.get<AdaptiveQuestion>(`/diagnostic/submit-answer/${topic_id}/${answer_index}`);
+      const response = await apiService.post<AdaptiveQuestion>("/diagnostic/submit-answer", answer);
       return response;
     } catch(error) {
       throw error as ApiError
