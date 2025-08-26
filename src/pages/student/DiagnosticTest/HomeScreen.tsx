@@ -42,7 +42,7 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
               </div>
               <div className="text-left">
                 <div className="font-medium text-dark-blue">
-                  {topics && 3 * topics.length} minutes
+                  60 minutes
                 </div>
                 <div className="text-small text-sky-blue">
                   Complete Assessment
@@ -109,7 +109,7 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
                 </CardDescription>
                 <div className="mt-4 p-3 rounded-lg bg-sky-blue">
                   <span className="font-medium text-white">
-                    ⏱ {rwTopics && rwTopics.length * 3} minutes
+                    ⏱ 28 minutes
                   </span>
                 </div>
               </CardHeader>
@@ -131,7 +131,7 @@ const DiagnosticHomeScreen = ({ onStartTest }: DiagnosticHomeScreenProps) => {
                 </CardDescription>
                 <div className="mt-4 p-3 rounded-lg bg-sky-blue">
                   <span className="font-medium text-white">
-                    ⏱ {mathTopics && mathTopics.length * 3} minutes
+                    ⏱ 32 minutes
                   </span>
                 </div>
               </CardHeader>

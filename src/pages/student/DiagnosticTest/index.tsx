@@ -47,7 +47,7 @@ const DiagnosticTest: React.FC = () => {
     setCurrentScreen("test");
     numberRW && dispatch(startTest({
       section_type: "RW",
-      duration_mins: 3 * numberRW
+      duration_mins: 28
     }));
   }
 
@@ -69,7 +69,7 @@ const DiagnosticTest: React.FC = () => {
     setCurrentScreen("test");
     numberMath && dispatch(startTest({
       section_type: "Math",
-      duration_mins: 3 * numberMath
+      duration_mins: 32
     }));
   }
   

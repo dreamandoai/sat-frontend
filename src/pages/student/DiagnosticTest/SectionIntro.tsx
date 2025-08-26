@@ -84,7 +84,7 @@ const DiagnosticSectionIntro = ({ section, onStart }: DiagnosticSectionIntroProp
                   className="border-sky-blue text-sky-blue px-4 py-2"
                 >
                   <Clock className="w-4 h-4 mr-2" />
-                  {isReadingWriting ? numberRW! * 3 : numberMath! * 3} minutes
+                  {isReadingWriting ? 28 : 32} minutes
                 </Badge>
               </div>
 
