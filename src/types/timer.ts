@@ -4,6 +4,10 @@ export interface StartTestResponse {
   duration_minutes: number;
 }
 
+export interface EndTestResponse {
+  status: string
+}
+
 export interface TimeRemainingResponse {
   remaining_seconds: number;
   end_time: string;

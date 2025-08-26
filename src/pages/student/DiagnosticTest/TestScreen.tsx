@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../../store';
-import { fetchRemaining } from '../../../services/timerService';
+import { endTest, fetchRemaining } from '../../../services/timerService';
 import { setRemaining } from '../../../store/timerSlice';
 import { setQuestion } from '../../../store/diagnosticSlice';
 import { diagnosticService } from '../../../services/diagnosticService';
@@ -141,7 +141,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   useEffect(() => {
     if(topicLength) {
       if (questionIndex === topicLength * 2) {
-        dispatch(setRemaining(0));
+        dispatch(endTest());
       }
     }
   }, [questionIndex, dispatch, topicLength]);

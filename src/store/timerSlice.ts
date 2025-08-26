@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { TimerState } from "../types/timer";
-import { startTest, fetchRemaining } from "../services/timerService";
+import { startTest, fetchRemaining, endTest } from "../services/timerService";
 
 const initialState: TimerState = {
   remaining: 0,
@@ -30,6 +30,14 @@ const timerSlice = createSlice({
       state.remaining = Math.floor((state.endTime - Date.now()) / 1000);
       state.isRunning = true;
       state.isTested = true;
+    });
+    builder.addCase(endTest.fulfilled, (state, action) => {
+      const { status } = action.payload;
+      if(status === "ended") {
+        state.endTime = null;
+        state.remaining = 0;
+        state.isRunning = false;
+      }
     });
     builder.addCase(fetchRemaining.fulfilled, (state, action) => {
       if (action.payload.error) {

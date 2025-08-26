@@ -5,6 +5,7 @@ export interface UserData {
   email: string;
   role: "student" | "teacher";
   target_score: number;
+  is_tested: boolean;
 }
 
 export interface LoginCredentials {

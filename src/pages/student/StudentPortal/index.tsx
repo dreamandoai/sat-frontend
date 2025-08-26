@@ -70,35 +70,38 @@ const StudentPortal: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {portalOptions.map((option, index) => {
             const IconComponent = option.icon
-            return (
-              <Card 
-                key={index} 
-                className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              >
-                <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 rounded-lg ${option.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className="h-6 w-6 text-white" />
-                  </div>
-                  <CardTitle className="text-dark-blue group-hover:text-sky-blue transition-colors duration-300">
-                    {option.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-dark-blue opacity-70 mb-4">
-                    {option.description}
-                  </CardDescription>
-                  <Button 
-                    className={`w-full ${option.color} ${option.hoverColor} text-white border-0 cursor-pointer`}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleOptionClick(option.title)
-                    }}
-                  >
-                    Get Started
-                  </Button>
-                </CardContent>
-              </Card>
-            )
+            if(option.title === "Take Your Diagnostic Test Now" && user?.is_tested === true) return null;
+            else {
+              return (
+                <Card 
+                  key={index} 
+                  className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                >
+                  <CardHeader className="pb-4">
+                    <div className={`w-12 h-12 rounded-lg ${option.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <IconComponent className="h-6 w-6 text-white" />
+                    </div>
+                    <CardTitle className="text-dark-blue group-hover:text-sky-blue transition-colors duration-300">
+                      {option.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-dark-blue opacity-70 mb-4">
+                      {option.description}
+                    </CardDescription>
+                    <Button 
+                      className={`w-full ${option.color} ${option.hoverColor} text-white border-0 cursor-pointer`}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleOptionClick(option.title)
+                      }}
+                    >
+                      Get Started
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            }
           })}
         </div>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">

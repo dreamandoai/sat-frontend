@@ -14,12 +14,14 @@ import { setTopics } from '../../../store/diagnosticSlice';
 import { diagnosticService } from '../../../services/diagnosticService';
 import { startTest } from '../../../services/timerService';
 import { setIsTested } from "../../../store/timerSlice";
+import { setUser } from "../../../store/authSlice";
 
 
 const DiagnosticTest: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const topics = useSelector((state: RootState) => state.diagnostic.topics);
   const { remaining, isTested } = useSelector((state: RootState) => state.timer);
+  const { user } = useSelector((state: RootState) => state.auth);
   const [currentScreen, setCurrentScreen] = useState<"home" | "rw-intro" | "test" | "transition" | "math-intro" | "results">("home");
   const [currentSection, setCurrentSection] = useState<TestSection>("RW");
   const numberRW = useMemo(() => {
@@ -61,6 +63,7 @@ const DiagnosticTest: React.FC = () => {
         setCurrentScreen("transition");
       } else {
         setCurrentScreen("results");
+        user && dispatch(setUser({user: {...user, is_tested: true}}));
       }
     }
   }, [currentSection, currentScreen, remaining]);
