@@ -11,7 +11,8 @@ import { Button } from '../../../components/Button';
 import { Progress } from '../../../components/Progress';
 import { Badge } from '../../../components/Badge';
 import { Alert, AlertDescription } from '../../../components/Alert';
-import { Clock, ArrowRight, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Calculator } from './Calculator';
+import { Clock, ArrowRight, AlertTriangle, CheckCircle, Calculator as CalculatorIcon } from 'lucide-react'
 import QuestionDisplay from './QuestionDisplay';
 import { formatTime, formatSectionName, formatQuestionNumber } from '../../../utils/formatters'
 
@@ -26,6 +27,9 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   const [ timeSec, setTimeSec ] = useState<number>(0);
   const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
   const { topics, question } = useSelector((state: RootState) => state.diagnostic);
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  const [calculatorType, setCalculatorType] = useState<"scientific" | "graphing">("scientific");
+
   const isLowTime = remaining > 60 && remaining < 300 // 5 minutes
   const isCriticalTime = remaining > 0 && remaining < 60 // 1 minute
 
@@ -287,6 +291,40 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
           </div>
         </div>
       </div>
+      {/* Calculator */}
+      <div className='fixed bottom-4 right-4 flex flex-col gap-2'>
+      {currentSection === "Math" && (
+        <>
+          <Button
+            variant="secondary"
+            className="bg-white shadow-lg"
+            onClick={() => {
+              setCalculatorType("scientific");
+              setIsCalculatorOpen(true);
+            }}
+          >
+            <CalculatorIcon className="w-4 h-4 mr-2" />
+            Scientific
+          </Button>
+          <Button
+            variant="secondary"
+            className="bg-white shadow-lg"
+            onClick={() => {
+              setCalculatorType("graphing");
+              setIsCalculatorOpen(true);
+            }}
+          >
+            <CalculatorIcon className="w-4 h-4 mr-2" />
+            Graphing
+          </Button>
+          <Calculator 
+            isOpen={isCalculatorOpen}
+            onClose={() => setIsCalculatorOpen(false)}
+            type={calculatorType}
+          />
+        </>
+      )}
+  </div>
     </div>
   )
 }
