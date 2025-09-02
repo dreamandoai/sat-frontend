@@ -4,27 +4,38 @@ import { useNavigate } from 'react-router';
 import { Button } from '../../../components/Button';
 import { Input } from '../../../components/Input';
 import { Label } from '../../../components/Label';
-import { ArrowLeft, GraduationCap, Eye, EyeOff } from 'lucide-react';
+import { Alert, AlertDescription } from '../../../components/Alert';
+import { ArrowLeft, GraduationCap, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { authService } from "../../../services/authService";
 import { setCredentials } from '../../../store/authSlice';
 import type { RootState } from '../../../store';
+import type { ApiError } from '../../../types/api';
 
 const Login: React.FC = () => {
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsLoading(true);
       const response = await authService.login({ email, password, role: "student" });
       dispatch(setCredentials(response));
       navigate('/student/portal');
     } catch (error) {
-      console.error('Login failed:', error);
+      setIsLoading(false);
+      if (typeof error === 'object' && error !== null && 'message' in error) {
+        const apiError = error as ApiError;
+        setError(apiError.data.detail);
+      } else {
+        console.error('Login failed:', error);
+      }
     }
   };
 
@@ -57,9 +68,15 @@ const Login: React.FC = () => {
               Student Login
             </h1>
             <p className="text-base text-[#00213e]/70">
-              Sign in to access your student portal
+              Sign in to access student portal
             </p>
           </div>
+          {error && (
+            <Alert className="mb-6 border-red-200 bg-red-50 rounded-lg" variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription className="text-red-800">{error}</AlertDescription>
+            </Alert>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label
@@ -108,9 +125,15 @@ const Login: React.FC = () => {
             </div>
             <Button
               type="submit"
+              disabled={isLoading}
               className="w-full h-12 px-6 py-4 text-base font-medium rounded-lg shadow-lg bg-[#3fa3f6] text-white transition-all duration-300 hover:shadow-xl disabled:opacity-50"
             >
-              Sign In
+              {isLoading ? 
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-current border-t-transparent mr-3" />
+                  Signing In...
+                </> : 'Sign In'
+              }
             </Button>
           </form>
           <div className="mt-6 text-center">

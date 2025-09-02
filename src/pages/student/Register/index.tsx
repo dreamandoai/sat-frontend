@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router';
 import { Button } from '../../../components/Button'
 import { Input } from '../../../components/Input'
 import { Label } from '../../../components/Label'
-import { ArrowLeft, GraduationCap, EyeOff, Eye } from 'lucide-react';
+import { Alert, AlertDescription } from '../../../components/Alert';
+import { ArrowLeft, GraduationCap, EyeOff, Eye, AlertCircle } from 'lucide-react';
 import { authService } from "../../../services/authService";
-import type { RegisterCredentials, RegisterResponse } from "../../../types/auth";
+import type { RegisterCredentials } from "../../../types/auth";
+import type { ApiError } from '../../../types/api';
 
 interface FormData {
   name: string
@@ -38,8 +40,11 @@ const Register: React.FC = () => {
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
-  const [showPassword, setShowPassword] = useState(false)
-  const [showRetypePassword, setShowRetypePassword] = useState(false)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [showRetypePassword, setShowRetypePassword] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
@@ -104,7 +109,8 @@ const Register: React.FC = () => {
     e.preventDefault()
     if (validateForm()) {
       try {
-        const response: RegisterResponse = await authService.register({ 
+        setIsLoading(true);
+        await authService.register({ 
           first_name: formData.name, 
           last_name: formData.surname,
           email: formData.email,
@@ -112,13 +118,18 @@ const Register: React.FC = () => {
           role: "student",
           target_score: formData.targetScore 
         } as RegisterCredentials);
-        if(response.status === "success") {
-          navigate('/student/login');
-        }
+        navigate('/student/login');
       } catch (error) {
-        console.error('Login failed:', error);
-        alert('Login failed. Please check your credentials.');
+        setIsLoading(false);
+        if (typeof error === 'object' && error !== null && 'message' in error) {
+          const apiError = error as ApiError;
+          setError(apiError.data.detail);
+        } else {
+          console.error('Login failed:', error);
+        }
       }
+    } else {
+      setIsLoading(false);
     }
   }
 
@@ -143,6 +154,12 @@ const Register: React.FC = () => {
               Create your student account
             </p>
           </div>
+          {error && (
+            <Alert className="mb-6 border-red-200 bg-red-50 rounded-lg" variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription className="text-red-800">{error}</AlertDescription>
+            </Alert>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-[#00213e] text-base">Name</Label>
@@ -259,10 +276,17 @@ const Register: React.FC = () => {
               )}
             </div>
             <Button 
-              type="submit" 
+              type="submit"
+              disabled={isLoading}
               className="w-full bg-sky-blue hover:bg-sky-blue/90 text-white h-12 px-6"
             >
-              Create Account
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-current border-t-transparent mr-3" />
+                  Creating Account...
+                </>
+              ) : "Create Account"
+              }
             </Button>
           </form>
         </div>
