@@ -323,8 +323,8 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
             type={calculatorType}
           />
         </>
-      )}
-  </div>
+          )}
+      </div>
     </div>
   )
 }
