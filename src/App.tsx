@@ -12,6 +12,7 @@ import TeacherPortal from "./pages/teacher/TeacherPortal";
 import PrivateRoute from "./layouts/PrivateRoute";
 import DiagnosticTest from "./pages/student/DiagnosticTest";
 import StudentManagement from "./pages/teacher/StudentManagement";
+import BookAClass from "./pages/student/BookAClass";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
             <Route element={<PrivateRoute allowedRoles={["student"]} />}>
               <Route path="portal" element={<StudentPortal />} />
               <Route path="diagnostic" element={<DiagnosticTest />} />
+              <Route path="book" element={<BookAClass />} />
             </Route>
           </Route>
           <Route path="teacher">

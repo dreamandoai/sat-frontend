@@ -3,13 +3,15 @@ import authReducer from "./authSlice";
 import diagnosticReducer from "./diagnosticSlice";
 import timerReducer from "./timerSlice";
 import studentManagementReducer from "./studentManagementSlice";
+import pairReducer from "./pairSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     diagnostic: diagnosticReducer,
     timer: timerReducer,
-    studentManagement: studentManagementReducer
+    studentManagement: studentManagementReducer,
+    pair: pairReducer,
   }
 });
 

@@ -6,6 +6,8 @@ import Navbar from "../../../layouts/Navbar";
 import { BookOpen, Brain, Calendar, FileText, GraduationCap } from "lucide-react";
 import type { RootState } from "../../../store";
 import Header from "../../../layouts/Header";
+import { useEffect, useState } from "react";
+import { pairService } from "../../../services/pairService";
 
 const portalOptions = [
   {
@@ -35,26 +37,34 @@ const portalOptions = [
     icon: GraduationCap,
     color: "bg-sky-blue",
     hoverColor: "hover:bg-sky-blue/90"
-  },
-  {
-    title: "Class Calendar",
-    description: "View your upcoming sessions, assignments, and important SAT dates",
-    icon: Calendar,
-    color: "bg-sunshine-yellow",
-    hoverColor: "hover:bg-sunshine-yellow/90"
   }
 ]
 
 const StudentPortal: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.user);
+  const [isCheckPair, setIsCheckPair] = useState<boolean>(false);
 
   const handleOptionClick = (option: string) => {
     if (option === "Take Your Diagnostic Test Now") {
-      // Navigate to internal diagnostic test
       navigate("/student/diagnostic");
+    } else if (option === "Book a Class") {
+      navigate("/student/book");
     }
   }
+
+  const handleCheckParingStatus = async () => {
+    try {
+      const response = await pairService.checkPairingStatus();
+      setIsCheckPair(response);
+    } catch (error) {
+      console.error("Error checking pairing status:", error);
+    }
+  }
+
+  useEffect(() => {
+    handleCheckParingStatus();
+  },[]);
 
   return (
     <div className="min-h-screen bg-light-yellow">
@@ -71,6 +81,7 @@ const StudentPortal: React.FC = () => {
           {portalOptions.map((option, index) => {
             const IconComponent = option.icon
             if(option.title === "Take Your Diagnostic Test Now" && user?.is_tested === true) return null;
+            if(option.title === "Book a Class" && !isCheckPair) return null;
             else {
               return (
                 <Card 
