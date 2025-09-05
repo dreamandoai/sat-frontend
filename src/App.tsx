@@ -11,6 +11,7 @@ import TeacherRegister from "./pages/teacher/Register";
 import TeacherPortal from "./pages/teacher/TeacherPortal";
 import PrivateRoute from "./layouts/PrivateRoute";
 import DiagnosticTest from "./pages/student/DiagnosticTest";
+import StudentManagement from "./pages/teacher/StudentManagement";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
             <Route path="register" element={<TeacherRegister />} />
             <Route element={<PrivateRoute allowedRoles={["teacher"]} />}>
               <Route path="portal" element={<TeacherPortal />} />
+              <Route path="students" element={<StudentManagement />} />
             </Route>
           </Route>
         </Routes>

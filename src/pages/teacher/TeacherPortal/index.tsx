@@ -1,12 +1,14 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Calendar, BookOpen, Users, Bot, LogOut, MoreHorizontal } from "lucide-react";
+import { BookOpen, Users, Bot, LogOut, MoreHorizontal } from "lucide-react";
 import { authService } from "../../../services/authService";
 import { logout } from "../../../store/authSlice";
 import type { RootState } from "../../../store";
+import { useNavigate } from "react-router";
 
 const TeacherPortal: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = useCallback(() => {
@@ -47,30 +49,12 @@ const TeacherPortal: React.FC = () => {
 
     {/* Main Content */}
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {/* Class Calendar */}
-        <div className="p-6 rounded-3xl shadow-xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-white border-[rgba(63,163,246,0.2)]">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 rounded-2xl shadow-lg bg-gradient-to-br from-[#3fa3f6] to-[#b2dafb]">
-              <Calendar className="h-8 w-8 text-white" />
-            </div>
-            <MoreHorizontal className="h-5 w-5 text-[rgba(0,33,62,0.6)]" />
-          </div>
-          <h3 className="font-heading font-bold mb-2 text-[22px] text-[#00213e]">
-            Class Calendar
-          </h3>
-          <p className="mb-4 text-[16px] text-[rgba(0,33,62,0.7)]">
-            Manage your class schedules and appointments
-          </p>
-          <div className="pt-4 border-t border-[rgba(63,163,246,0.1)]">
-            <p className="font-medium text-[14px] text-[#3fa3f6]">
-              Classes this week
-            </p>
-          </div>
-        </div>
-
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Students */}
-        <div className="p-6 rounded-3xl shadow-xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-[#3fa3f6] border-[rgba(63,163,246,0.3)]">
+        <div 
+          className="p-6 rounded-3xl shadow-xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-[#3fa3f6] border-[rgba(63,163,246,0.3)]"
+          onClick={() => navigate('/teacher/students')}
+          >
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 rounded-2xl shadow-lg bg-white">
               <Users className="h-8 w-8 text-[#3fa3f6]" />
