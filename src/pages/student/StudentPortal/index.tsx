@@ -50,6 +50,8 @@ const StudentPortal: React.FC = () => {
       navigate("/student/diagnostic");
     } else if (option === "Book a Class") {
       navigate("/student/book");
+    } else if (option === "Free SAT Resources") {
+      navigate("/student/resource");
     }
   }
 

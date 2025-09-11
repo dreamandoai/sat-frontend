@@ -4,6 +4,7 @@ import diagnosticReducer from "./diagnosticSlice";
 import timerReducer from "./timerSlice";
 import studentManagementReducer from "./studentManagementSlice";
 import pairReducer from "./pairSlice";
+import resourceReducer from "./resourceSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     timer: timerReducer,
     studentManagement: studentManagementReducer,
     pair: pairReducer,
+    resource: resourceReducer
   }
 });
 

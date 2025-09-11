@@ -13,6 +13,7 @@ import PrivateRoute from "./layouts/PrivateRoute";
 import DiagnosticTest from "./pages/student/DiagnosticTest";
 import StudentManagement from "./pages/teacher/StudentManagement";
 import BookAClass from "./pages/student/BookAClass";
+import Resources from "./pages/Resources";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
               <Route path="portal" element={<StudentPortal />} />
               <Route path="diagnostic" element={<DiagnosticTest />} />
               <Route path="book" element={<BookAClass />} />
+              <Route path="resource" element={<Resources />} />
             </Route>
           </Route>
           <Route path="teacher">
