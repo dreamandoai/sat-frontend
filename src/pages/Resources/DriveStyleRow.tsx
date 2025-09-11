@@ -93,6 +93,7 @@ const DriveStyleRow: React.FC<DriveStyleRowProps> = ({
               onClick={handleDisclosureClick}
               className="p-0 border-0 bg-transparent cursor-pointer flex items-center justify-center w-4 h-4 hover:bg-gray-200 rounded transition-colors"
               aria-label={isExpanded ? 'Collapse folder' : 'Expand folder'}
+              disabled={isLoading}
             >
               {isLoading ? (
                 <div className="h-3 w-3 animate-spin rounded-full border-1 border-[#00213e] border-t-transparent" />

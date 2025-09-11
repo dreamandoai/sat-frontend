@@ -12,16 +12,14 @@ interface LeftPanelProps {
   nodes: FolderNode[],
   selectedFolder: FolderNode | null,
   onSelectFolder: (node: FolderNode) => void
+  loading: boolean
 }
 
-const LeftPanel: React.FC<LeftPanelProps> = ({ nodes, selectedFolder, onSelectFolder }) => {
+const LeftPanel: React.FC<LeftPanelProps> = ({ nodes, selectedFolder, onSelectFolder, loading }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { folderTreeData } = useSelector((state: RootState) => state.resource);
-  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
-    new Set([])
-  )
-  const [error, setError] = useState<string>("");
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set([]));
   const [loadingFolders, setLoadingFolders] = useState<Set<string>>(new Set());
 
   const handleNodeSelect = (node: FolderNode) => {
@@ -62,7 +60,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ nodes, selectedFolder, onSelectFo
       } catch (error) {
         if (typeof error === 'object' && error !== null && 'message' in error) {
           const apiError = error as ApiError;
-          setError(apiError.data.detail);
+          console.log("Error: ", apiError.data.detail);
         } else {
           console.error('Error getting subfolders:', error);
         }
@@ -78,7 +76,6 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ nodes, selectedFolder, onSelectFo
 
   return (
     <div className="w-[300px] h-full bg-white flex flex-col" style={{ padding: '16px 12px' }}>
-      {/* My Drive Header */}
       <div className="mb-3">
         <h3 className="text-[22px] font-bold text-[#00213e] mb-3" style={{ fontFamily: 'Montserrat' }}>
           My Drive
@@ -89,21 +86,27 @@ const LeftPanel: React.FC<LeftPanelProps> = ({ nodes, selectedFolder, onSelectFo
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="h-full">
           <div className="space-y-1">
-            {nodes.map((node) => (
-              <DriveStyleRow
-                key={node.id}
-                node={node}
-                depth={0}
-                isSelected={selectedFolder?.id === node.id}
-                isExpanded={expandedFolders.has(node.id)}
-                isLoading={loadingFolders.has(node.id)}
-                loadingFolders = {loadingFolders}
-                onSelect={handleNodeSelect}
-                onToggleExpand={handleToggleExpand}
-                selectedNodeId={selectedFolder?.id || null}
-                expandedFolders={expandedFolders}
-              />
-            ))}
+            {loading ?
+              <div className='flex w-full justify-center items-center'>
+                <div className="h-5 w-5 animate-spin rounded-full border-1 border-[#00213e] border-t-transparent">
+                </div>
+              </div>: 
+              nodes.map((node) => (
+                <DriveStyleRow
+                  key={node.id}
+                  node={node}
+                  depth={0}
+                  isSelected={selectedFolder?.id === node.id}
+                  isExpanded={expandedFolders.has(node.id)}
+                  isLoading={loadingFolders.has(node.id)}
+                  loadingFolders = {loadingFolders}
+                  onSelect={handleNodeSelect}
+                  onToggleExpand={handleToggleExpand}
+                  selectedNodeId={selectedFolder?.id || null}
+                  expandedFolders={expandedFolders}
+                />
+              ))
+            }
           </div>
         </ScrollArea>
       </div>

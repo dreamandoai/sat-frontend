@@ -18,17 +18,20 @@ const Resources: React.FC = () => {
   const { folderTreeData } = useSelector((state: RootState) => state.resource);
   const { user } = useSelector((state: RootState) => state.auth);
   const [selectedFolder, setSelectedFolder] = useState<FolderNode | null>(null);
-  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleGetFolderData = async () => {
     if(user) {
+      setLoading(true);
       try {
         const response = await resourceService.getSubFolders(FOLDERS[user.role])
         dispatch(setFolderTreeData(response));
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         if (typeof error === 'object' && error !== null && 'message' in error) {
           const apiError = error as ApiError;
-          setError(apiError.data.detail);
+          console.log("Error: ", apiError.data.detail);
         } else {
           console.error('Error getting teachers:', error);
         }
@@ -42,13 +45,19 @@ const Resources: React.FC = () => {
 
   useEffect(() => {
     handleGetFolderData();
-  }, [])
+  }, []);
+
   return (
     <div className="fixed inset-0 z-50 bg-[#ffffff]">
       <Header />
       <div className="flex h-[calc(100vh-4rem)]">
         <div className="border-r border-gray-200">
-          <LeftPanel nodes={folderTreeData} selectedFolder={selectedFolder} onSelectFolder={handleSelectFolder} />
+          <LeftPanel 
+            nodes={folderTreeData} 
+            selectedFolder={selectedFolder} 
+            onSelectFolder={handleSelectFolder}
+            loading={loading}
+          />
         </div>
       </div>
     </div>
