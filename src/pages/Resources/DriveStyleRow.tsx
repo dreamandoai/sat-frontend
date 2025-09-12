@@ -14,7 +14,7 @@ interface DriveStyleRowProps {
   loadingFolders: Set<string>
 }
 
-const getFileIcon = (fileType?: string) => {
+export const getFileIcon = (fileType?: string) => {
   if (!fileType) return <FileText className="h-4 w-4 text-gray-500" />
   
   switch (fileType) {

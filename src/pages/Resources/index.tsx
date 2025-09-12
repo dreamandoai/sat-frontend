@@ -7,6 +7,7 @@ import { resourceService } from "../../services/resourceService"
 import { setFolderTreeData } from '../../store/resourceSlice';
 import type { ApiError } from '../../types/api';
 import type { FolderNode } from '../../types/resources';
+import RightPanel from './RightPanel';
 
 const FOLDERS = {
   "teacher": "1JTaIkw1JHBHh0Hc20qchKOFNYsORPce7",
@@ -39,7 +40,7 @@ const Resources: React.FC = () => {
     }
   };
 
-  const handleSelectFolder = (node: FolderNode) => {
+  const handleSelectFolder = (node: FolderNode | null) => {
     setSelectedFolder(node);
   }
 
@@ -59,6 +60,10 @@ const Resources: React.FC = () => {
             loading={loading}
           />
         </div>
+        <RightPanel
+          selectedFolder={selectedFolder}
+          onSelectedFolder={handleSelectFolder}
+        />
       </div>
     </div>
   )

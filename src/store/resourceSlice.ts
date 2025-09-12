@@ -1,12 +1,14 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { FolderNode } from '../types/resources';
+import type { FileNode, FolderNode } from '../types/resources';
 
 interface ResourceState {
-  folderTreeData: FolderNode[] 
+  folderTreeData: FolderNode[],
+  filesToShow: FileNode[]
 }
 
 const initialState: ResourceState = {
   folderTreeData: [],
+  filesToShow: []
 };
 
 const resourceSlice = createSlice({
@@ -16,9 +18,12 @@ const resourceSlice = createSlice({
     setFolderTreeData: ( state, action: PayloadAction<FolderNode[]> ) => {
       state.folderTreeData = action.payload
     },
+    setFilesToShow: ( state, action: PayloadAction<FileNode[]> ) => {
+      state.filesToShow = action.payload
+    },
   },
 });
 
-export const { setFolderTreeData } = resourceSlice.actions;
+export const { setFolderTreeData, setFilesToShow } = resourceSlice.actions;
 
 export default resourceSlice.reducer;
