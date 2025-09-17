@@ -1,14 +1,16 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Student, DiagnosticResult } from '../types/student-management';
+import type { Student, DiagnosticResult, StudyPlan } from '../types/student-management';
 
 interface StudentManagementState {
   students: Student[],
   diagnosticResults: DiagnosticResult[]
+  studyPlan: StudyPlan | null
 }
 
 const initialState: StudentManagementState = {
   students: [],
-  diagnosticResults: []
+  diagnosticResults: [],
+  studyPlan: null
 };
 
 const studentManagementSlice = createSlice({
@@ -20,10 +22,13 @@ const studentManagementSlice = createSlice({
     },
     setDiagnosticResults: (state, action: PayloadAction<DiagnosticResult[]>) => {
       state.diagnosticResults = action.payload;
-    }
+    },
+    setSharedPlan: (state, action: PayloadAction<StudyPlan>) => {
+      state.studyPlan = action.payload;
+    } 
   },
 });
 
-export const { setStudents, setDiagnosticResults } = studentManagementSlice.actions;
+export const { setStudents, setDiagnosticResults, setSharedPlan } = studentManagementSlice.actions;
 
 export default studentManagementSlice.reducer;

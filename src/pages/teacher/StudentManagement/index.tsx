@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../store';
 import type { Student } from '../../../types/student-management';
 import { studentManagementService } from '../../../services/studentManagementService';
-import { setStudents, setDiagnosticResults } from '../../../store/studentManagementSlice';
+import { setStudents, setDiagnosticResults, setSharedPlan } from '../../../store/studentManagementSlice';
 import type { ApiError } from '../../../types/api';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 
 const StudentManagement: React.FC = () => {
   const dispatch = useDispatch();
-  const { students, diagnosticResults } = useSelector((state: RootState) => state.studentManagement);
+  const { students, diagnosticResults, studyPlan } = useSelector((state: RootState) => state.studentManagement);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [error, setError] = useState<string>("");
@@ -50,6 +50,18 @@ const StudentManagement: React.FC = () => {
     }
   };
 
+  const handleGetSharedPlan = async (studentId: string) => {
+    try {
+      const response = await studentManagementService.getSharedPlan(studentId);
+      if (response) {
+        dispatch(setSharedPlan(response));
+      }
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("Failed to fetch diagnostic results:", apiError.message);
+    }
+  };
+
   useEffect(() => {
     if (filteredStudents.length > 0) {
       setSelectedStudent(filteredStudents[0]);
@@ -62,7 +74,8 @@ const StudentManagement: React.FC = () => {
 
   useEffect(() => {
     if (selectedStudent) {
-      handleGetDiagnosticResults(selectedStudent.id);  
+      handleGetDiagnosticResults(selectedStudent.id);
+      handleGetSharedPlan(selectedStudent.id); 
     }
   }, [selectedStudent]);
 
@@ -81,6 +94,7 @@ const StudentManagement: React.FC = () => {
           <RightPanel
             selectedStudent={selectedStudent}
             diagnosticResults={diagnosticResults}
+            studyPlan={studyPlan}
           />
         </div>
       </div>

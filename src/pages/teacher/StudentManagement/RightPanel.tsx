@@ -1,15 +1,19 @@
 import React, { useMemo } from 'react';
-import type { DiagnosticResult, Student } from '../../../types/student-management';
-import { Card, CardContent } from '../../../components/Card';
+import type { DiagnosticResult, Student, StudyPlan } from '../../../types/student-management';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../components/Card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/Tabs';
 import { Badge } from '../../../components/Badge';
 import { CheckCircle, X } from 'lucide-react';
+import SummaryBar from './SummaryBar';
+import WeekAccordion from './WeekAccordion';
 
 interface RightPanelProps {
   selectedStudent: Student | null;
   diagnosticResults: DiagnosticResult[];
+  studyPlan: StudyPlan | null;
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({ selectedStudent, diagnosticResults }) => {
+const RightPanel: React.FC<RightPanelProps> = ({ selectedStudent, diagnosticResults, studyPlan }) => {
   const mathDiagnosticResults = useMemo(
     () => diagnosticResults.filter((d: DiagnosticResult) => d.section === "Math"), 
     [diagnosticResults]
@@ -141,6 +145,12 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedStudent, diagnosticResu
     )
   }
 
+  const getFormattedDate = (isoString: string) => {
+    const date = new Date(isoString);
+    const formatted = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    return formatted
+  }
+
   return (
     <div className="lg:col-span-8">
       {selectedStudent ? (
@@ -167,7 +177,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedStudent, diagnosticResu
               {/* Test Completion Date */}
               <div className="p-4 rounded-lg" style={{ backgroundColor: '#b2dafb', borderColor: 'rgba(63, 163, 246, 0.3)' }}>
                 <p className="text-center" style={{ fontSize: '14px', color: '#00213e' }}>
-                  Test completed on {selectedStudent.tested_date}
+                  Test completed on {getFormattedDate(selectedStudent.tested_date)}
                 </p>
               </div>
 
@@ -208,6 +218,139 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedStudent, diagnosticResu
                   {renderTopicResults(rwDiagnosticResults, "english")}
                 </div>
               </div>
+
+              {/* Study Plan Section */}
+              {studyPlan && (
+                <div className="space-y-6 mt-8">
+                  <div className="text-center mb-6">
+                    <h3 className="font-heading font-bold mb-2" style={{ fontSize: '20px', color: '#00213e' }}>
+                      Personalized Study Plan
+                    </h3>
+                    <p style={{ fontSize: '14px', color: 'rgba(0, 33, 62, 0.7)' }}>
+                      AI-generated study plan based on diagnostic test results
+                    </p>
+                  </div>
+                  <Card style={{ backgroundColor: '#ffffff', borderColor: 'rgba(63, 163, 246, 0.2)' }}>
+                    <CardContent className="p-6">
+                      <Tabs defaultValue="plan" className="w-full">
+                        <div className="flex items-center justify-between mb-6">
+                          <TabsList className="rounded-lg p-1" style={{ backgroundColor: '#b2dafb' }}>
+                            <TabsTrigger 
+                              value="plan" 
+                              className="rounded-md px-4 py-2 font-medium"
+                              style={{ 
+                                backgroundColor: 'transparent',
+                                color: '#00213e'
+                              }}
+                            >
+                              Weekly Plan
+                            </TabsTrigger>
+                            <TabsTrigger 
+                              value="summary" 
+                              className="rounded-md px-4 py-2 font-medium"
+                              style={{ 
+                                backgroundColor: 'transparent',
+                                color: '#00213e'
+                              }}
+                            >
+                              Summary
+                            </TabsTrigger>
+                          </TabsList>
+                          
+                          {/* Plan Info */}
+                          <div className="text-right">
+                            <p style={{ fontSize: '12px', color: 'rgba(0, 33, 62, 0.7)' }}>
+                              Generated: {new Date(studyPlan.meta.generated_at).toLocaleDateString()}
+                            </p>
+                            <p style={{ fontSize: '12px', color: 'rgba(0, 33, 62, 0.7)' }}>
+                              {studyPlan.meta.cap_per_week} min/week cap
+                            </p>
+                          </div>
+                        </div>
+
+                        <TabsContent value="plan" className="space-y-6">
+                          <SummaryBar plan={studyPlan} />
+                          <WeekAccordion plan={studyPlan} />
+                        </TabsContent>
+
+                        <TabsContent value="summary">
+                          <Card className="border rounded-lg" style={{ backgroundColor: '#feefad', borderColor: 'rgba(252, 218, 73, 0.3)' }}>
+                            <CardHeader className="rounded-t-lg" style={{ backgroundColor: 'rgba(252, 218, 73, 0.3)' }}>
+                              <CardTitle className="font-heading font-bold" style={{ fontSize: '18px', color: '#00213e' }}>
+                                Plan Summary
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-6">
+                              <div className="space-y-6">
+                                <div>
+                                  <h4 className="font-heading font-bold mb-4" style={{ fontSize: '16px', color: '#00213e' }}>
+                                    Plan Details
+                                  </h4>
+                                  <div className="grid grid-cols-2 gap-4" style={{ fontSize: '14px' }}>
+                                    <div className="flex justify-between">
+                                      <span style={{ color: 'rgba(0, 33, 62, 0.7)' }}>Generated:</span>
+                                      <span className="font-medium" style={{ color: '#00213e' }}>
+                                        {new Date(studyPlan.meta.generated_at).toLocaleDateString()}
+                                      </span>
+                                    </div>
+                                    {/* <div className="flex justify-between">
+                                      <span style={{ color: 'rgba(0, 33, 62, 0.7)' }}>Rules Version:</span>
+                                      <span className="font-medium" style={{ color: '#00213e' }}>
+                                        {studyPlan.meta.rulesVersion || "1.0"}
+                                      </span>
+                                    </div> */}
+                                    <div className="flex justify-between">
+                                      <span style={{ color: 'rgba(0, 33, 62, 0.7)' }}>Total Weeks:</span>
+                                      <span className="font-medium" style={{ color: '#00213e' }}>
+                                        {studyPlan.weeks.length}
+                                      </span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                      <span style={{ color: 'rgba(0, 33, 62, 0.7)' }}>Weekly Cap:</span>
+                                      <span className="font-medium" style={{ color: '#00213e' }}>
+                                        {studyPlan.meta.cap_per_week} minutes
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div>
+                                  <h4 className="font-heading font-bold mb-4" style={{ fontSize: '16px', color: '#00213e' }}>
+                                    Week Breakdown
+                                  </h4>
+                                  <div className="space-y-3">
+                                    {studyPlan.weeks.map(week => (
+                                      <div 
+                                        key={week.week} 
+                                        className="flex justify-between items-center p-4 rounded-lg"
+                                        style={{ 
+                                          fontSize: '14px',
+                                          backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+                                          border: '1px solid rgba(252, 218, 73, 0.2)'
+                                        }}
+                                      >
+                                        <span className="font-medium" style={{ color: '#00213e' }}>
+                                          Week {week.week}
+                                        </span>
+                                        <span style={{ color: 'rgba(0, 33, 62, 0.7)' }}>
+                                          {week.blocks.length} topics
+                                        </span>
+                                        <span className="font-medium" style={{ color: '#3fa3f6' }}>
+                                          {week.blocks.reduce((sum, b) => sum + b.minutes, 0)} minutes
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </TabsContent>
+                      </Tabs>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

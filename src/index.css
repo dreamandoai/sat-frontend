@@ -1120,6 +1120,29 @@ html {
   left: 100%;
 }
 
+.students-topic-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.students-topic-scroll::-webkit-scrollbar-track {
+  background: #b2dafb1a;
+  border-radius: 3px;
+}
+
+.students-topic-scroll::-webkit-scrollbar-thumb {
+  background: #3fa3f64d;
+  border-radius: 3px;
+}
+
+.students-topic-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3fa3f680;
+}
+
+.students-topic-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #3fa3f64d #b2dafb1a;
+}
+
 /* Countdown animation */
 @keyframes countdown-pulse {
   0%, 100% {
