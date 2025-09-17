@@ -43,23 +43,12 @@ const QuestionDisplay = ({ question, selectedAnswer, onAnswer, topic }: Question
         </Badge>
       </div>
 
-      {/* Chart Image */}
-      {question.chart_image && (
-        <div className="bg-white p-4 border border-sky-blue/20 rounded-lg shadow-sm">
-          <img
-            src={question.chart_image}
-            alt="Chart or graph for analysis"
-            className="w-full h-auto max-w-2xl mx-auto"
-          />
-        </div>
-      )}
-
       {/* Figure Image */}
       {question.figure_image && (
         <div className="bg-white p-4 border border-sky-blue/20 rounded-lg shadow-sm">
           <img
-            src={question.figure_image}
-            alt="Mathematical figure or diagram"
+            src={new URL(`../../../assets/${question.figure_image}.png`, import.meta.url).href}
+            alt={question.figure_image}
             className="w-full h-auto max-w-lg mx-auto"
           />
         </div>
