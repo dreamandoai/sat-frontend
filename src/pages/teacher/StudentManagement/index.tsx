@@ -14,7 +14,6 @@ const StudentManagement: React.FC = () => {
   const { students, diagnosticResults, studyPlan } = useSelector((state: RootState) => state.studentManagement);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-  const [error, setError] = useState<string>("");
 
   const filteredStudents: Student[] = useMemo(() => {
     if (!searchQuery.trim()) return students;
@@ -31,7 +30,7 @@ const StudentManagement: React.FC = () => {
     } catch (error: unknown) {
       if (typeof error === 'object' && error !== null && 'message' in error) {
         const apiError = error as ApiError;
-        setError(apiError.data.detail);
+        console.error(apiError.data.detail);
       } else {
         console.error('Unexpected error:', error);
       }

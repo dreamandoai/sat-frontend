@@ -16,8 +16,7 @@ const BookAClass: React.FC = () => {
   const dispatch = useDispatch();
   const { teachers } = useSelector((state: RootState) => state.pair);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [selectedTeacher, setSelectedTeacher] = useState<TeacherShort | null>(null)
-  const [error, setError] = useState<string>('');
+  const [selectedTeacher, setSelectedTeacher] = useState<TeacherShort | null>(null);
 
   const getSubjectIcon = (subject: 'math' | 'rw') => {
     return subject === 'math' ? Calculator : BookOpen
@@ -34,7 +33,7 @@ const BookAClass: React.FC = () => {
     } catch (error) {
       if (typeof error === 'object' && error !== null && 'message' in error) {
         const apiError = error as ApiError;
-        setError(apiError.data.detail);
+        console.error(apiError.data.detail);
       } else {
         console.error('Error getting teachers:', error);
       }

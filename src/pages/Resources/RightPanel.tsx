@@ -23,7 +23,6 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
   const [currentFolderId, setCurrentFolderId] = useState<string | null>(null);
   const [token, setToken] = useState<string>("");
   const [remainingFolders, setRemainingFolders] = useState<string[] | null>(null);
-  const [showPDFViewer, setShowPDFViewer] = useState<boolean>(false);
   const [isShowNextButton, setIsShowNextButton] = useState<boolean>(false);
 
   useEffect(() => {
@@ -166,7 +165,6 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
               <div
                 key={file.id}
                 className="group cursor-pointer p-4 rounded-lg border border-gray-200 hover:border-[#3fa3f6] hover:shadow-md transition-all duration-200 bg-[#ffffff]"
-                onClick={() => setShowPDFViewer(true)}
               >
                 <div className="flex flex-col items-center text-center">
                   <div className="mb-3 p-4 bg-gray-50 rounded-lg group-hover:bg-[#b2dafb]/20 transition-colors">
@@ -202,7 +200,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="rounded-lg">
-                      <DropdownMenuItem onClick={() => setShowPDFViewer(true)}>
+                      <DropdownMenuItem>
                         <Eye className="h-4 w-4 mr-2" />
                         Open
                       </DropdownMenuItem>
@@ -226,7 +224,6 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
               <div
                 key={file.id}
                 className="group flex items-center px-4 py-3 rounded-lg hover:bg-[#b2dafb]/20 cursor-pointer transition-colors border border-transparent hover:border-[#3fa3f6]/30"
-                onClick={() => setShowPDFViewer(true)}
               >
                 <div className="flex items-center space-x-3 flex-1 min-w-0">
                   <div className="flex-shrink-0">
@@ -265,7 +262,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="rounded-lg">
-                    <DropdownMenuItem onClick={() => setShowPDFViewer(true)}>
+                    <DropdownMenuItem>
                       <Eye className="h-4 w-4 mr-2" />
                       Open
                     </DropdownMenuItem>

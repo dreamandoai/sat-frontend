@@ -75,7 +75,10 @@ const TeacherPortal: React.FC = () => {
         </div>
 
         {/* SAT Resources */}
-        <div className="p-6 rounded-3xl shadow-xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-[#feefad] border-[rgba(252,218,73,0.3)]">
+        <div 
+          className="p-6 rounded-3xl shadow-xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-[#feefad] border-[rgba(252,218,73,0.3)]"
+          onClick={() => navigate('/teacher/resource')}
+          >
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 rounded-2xl shadow-lg bg-[#00213e]">
               <BookOpen className="h-8 w-8 text-white" />

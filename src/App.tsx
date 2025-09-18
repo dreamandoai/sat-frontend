@@ -38,6 +38,7 @@ function App() {
             <Route element={<PrivateRoute allowedRoles={["teacher"]} />}>
               <Route path="portal" element={<TeacherPortal />} />
               <Route path="students" element={<StudentManagement />} />
+              <Route path="resource" element={<Resources />} />
             </Route>
           </Route>
         </Routes>
