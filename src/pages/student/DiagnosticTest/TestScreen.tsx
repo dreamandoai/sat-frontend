@@ -22,13 +22,14 @@ interface DiagnosticTestScreenProps {
 
 const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
+  const { topics, question } = useSelector((state: RootState) => state.diagnostic);
   const [ questionIndex, setQuestionIndex ] = useState<number>(0);
   const [ selectedAnswer, setSelectedAnswer ] = useState<number | null>(null);
   const [ timeSec, setTimeSec ] = useState<number>(0);
-  const { remaining, endTime, isRunning } = useSelector((state: RootState) => state.timer);
-  const { topics, question } = useSelector((state: RootState) => state.diagnostic);
-  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState<boolean>(false);
   const [calculatorType, setCalculatorType] = useState<"scientific" | "graphing">("scientific");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isLowTime = remaining > 60 && remaining < 300 // 5 minutes
   const isCriticalTime = remaining > 0 && remaining < 60 // 1 minute
@@ -44,6 +45,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
   }, [topics, currentSection, questionIndex]);
 
   const handleGetQuestion = useCallback(async (next_id: string, topic_id: string, answer_index: number, time_sec: number, level: DifficultyLevel) => {
+    setIsLoading(true);
     const res = await diagnosticService.getQuestion({
       next_topic_id: next_id,
       current_topic_id: topic_id, 
@@ -52,6 +54,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
       difficulty: level
     });
     dispatch(setQuestion(res));
+    setIsLoading(false);
   }, [dispatch]);
 
   const handleAnswer = (answerIndex: number) => {
@@ -276,7 +279,7 @@ const DiagnosticTestScreen = ({ currentSection }: DiagnosticTestScreenProps) => 
           <div className="flex justify-end items-center">
             <Button
               onClick={handleNext}
-              disabled={selectedAnswer === null}
+              disabled={selectedAnswer === null || isLoading}
               size="lg"
               className={`flex items-center gap-3 shadow-lg transform transition-all duration-200 ${
                 selectedAnswer !== null 
