@@ -25,6 +25,8 @@ export interface RegisterCredentials {
   last_name: string;
   password: string;
   target_score?: number;
+  calendar_link?: string;
+  subject?: string;
   role: "student" | "teacher"; 
 }
 

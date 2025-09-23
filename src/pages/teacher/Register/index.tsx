@@ -4,6 +4,7 @@ import { Button } from '../../../components/Button'
 import { Input } from '../../../components/Input'
 import { Label } from '../../../components/Label'
 import { Alert, AlertDescription } from '../../../components/Alert'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../../../components/Select'
 import { ArrowLeft, GraduationCap, EyeOff, Eye, AlertCircle } from 'lucide-react';
 import { authService } from "../../../services/authService";
 import type { RegisterCredentials } from "../../../types/auth";
@@ -15,14 +16,18 @@ interface FormData {
   email: string
   password: string
   retypePassword: string
+  subject: 'Math' | 'RW'
+  calendar_link: string
 }
 
 interface FormErrors {
   name?: string
   surname?: string
   email?: string
+  calendar_link?: string
   password?: string
   retypePassword?: string
+  subject?: string
 }
 
 const Register: React.FC = () => {
@@ -33,7 +38,9 @@ const Register: React.FC = () => {
     surname: '',
     email: '',
     password: '',
-    retypePassword: ''
+    retypePassword: '',
+    subject: 'Math',
+    calendar_link: ''
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
@@ -65,6 +72,13 @@ const Register: React.FC = () => {
       newErrors.email = 'Email address is required'
     } else if (!emailRegex.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address'
+    }
+
+    // Calendar link validation
+    if (!formData.calendar_link.trim()) {
+      newErrors.calendar_link = 'Calendar link is required'
+    } else if (!formData.calendar_link.startsWith('https://calendly.com/')) {
+      newErrors.calendar_link = 'Please enter a valid Calendly link'
     }
 
     // Password validation
@@ -105,6 +119,8 @@ const Register: React.FC = () => {
           last_name: formData.surname,
           email: formData.email,
           password: formData.password,
+          subject: formData.subject,
+          calendar_link: formData.calendar_link,
           role: "teacher"
         } as RegisterCredentials);
         navigate('/teacher/login');
@@ -196,6 +212,40 @@ const Register: React.FC = () => {
               />
               {errors.email && (
                 <p className="text-red-500 text-small">{errors.email}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="subject" className='text-dark-blue'>Subjects</Label>
+              <Select value={formData.subject} onValueChange={(value: 'Math' | 'RW') => handleInputChange("subject", value)}>
+                <SelectTrigger 
+                  className="rounded-lg border-2 transition-all duration-300 focus:shadow-lg bg-[#feefad] border-[#3fa3f64d] focus:border-sky-blue"
+                >
+                  <SelectValue placeholder="Select subjects you teach" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Math">Math</SelectItem>
+                  <SelectItem value="RW">English</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="calendarLink">
+                Calendly Link
+              </Label>
+              <Input
+                id="calendlyLink"
+                type="url"
+                value={formData.calendar_link}
+                onChange={(e) => handleInputChange('calendar_link', e.target.value)}
+                className={`bg-[#feefad] rounded-lg border-2 text-dark-blue text-base transition-all duration-300 focus:shadow-lg ${
+                  errors.calendar_link ? 'border-red-500' : 'border-[#3fa3f64d] focus:border-sky-blue'
+                }`}
+              />
+              <p style={{ color: 'rgba(0, 33, 62, 0.6)' }} className='text-small'>
+                Students will use this link to book classes with you
+              </p>
+              {errors.calendar_link && (
+                <p className="text-red-500 text-small">{errors.calendar_link}</p>
               )}
             </div>
             <div className="space-y-2">

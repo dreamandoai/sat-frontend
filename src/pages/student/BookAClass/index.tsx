@@ -165,7 +165,7 @@ const BookAClass: React.FC = () => {
             {/* Calendly Content - Fills remaining space */}
             <div className="flex-1 overflow-hidden">
               <iframe
-                src={`https://calendly.com/${selectedTeacher.calendar_name}`}
+                src={selectedTeacher.calendar_link}
                 width="100%"
                 height="100%"
                 frameBorder="0"

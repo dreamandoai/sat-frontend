@@ -3,6 +3,6 @@ export interface TeacherShort {
   first_name: string;
   last_name: string;
   email: string;
-  calendar_name: string;
+  calendar_link: string;
   subject: 'math' | 'rw';
 }
