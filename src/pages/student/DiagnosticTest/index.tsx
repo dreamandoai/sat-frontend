@@ -12,6 +12,7 @@ import type { TestSection, Topic } from "../../../types/diagnostic";
 import type { AppDispatch, RootState } from '../../../store';
 import { setTopics } from '../../../store/diagnosticSlice';
 import { diagnosticService } from '../../../services/diagnosticService';
+import { authService } from '../../../services/authService';
 import { startTest } from '../../../services/timerService';
 import { setIsTested } from "../../../store/timerSlice";
 import { setUser } from "../../../store/authSlice";
@@ -63,7 +64,10 @@ const DiagnosticTest: React.FC = () => {
         setCurrentScreen("transition");
       } else {
         setCurrentScreen("results");
-        user && dispatch(setUser({user: {...user, is_tested: true}}));
+        if(user) {
+          authService.storeUser({...user, is_tested: true})
+          dispatch(setUser({user: {...user, is_tested: true}}));
+        }
       }
     }
   }, [currentSection, currentScreen, remaining]);

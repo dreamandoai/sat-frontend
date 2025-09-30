@@ -55,6 +55,10 @@ export const authService = {
     removeUser();
   },
 
+  storeUser: (userData: UserData) => {
+    storeUser(userData);
+  },
+
   getCurrentToken: (): string | null => {
     return getToken();
   },
