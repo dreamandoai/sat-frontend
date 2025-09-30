@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Grid3X3, List, Download, Eye, MoreVertical, Folder, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Grid3X3, List, Folder, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../../components/Button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../components/DropdownMenu';
 import type { FolderNode } from '../../types/resources';
 import { resourceService } from '../../services/resourceService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilesToShow } from '../../store/resourceSlice';
 import type { ApiError } from '../../types/api';
 import type { RootState } from '../../store';
-import { getFileIcon } from './DriveStyleRow';
+import GridShowingFile from './GridShowingFile';
+import ListShowingFile from './ListShowingFile';
 
 interface RightPanelProps {
   selectedFolder: FolderNode | null,
@@ -162,125 +162,16 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {filesToShow.map((file) => (
-              <div
-                key={file.id}
-                className="group cursor-pointer p-4 rounded-lg border border-gray-200 hover:border-[#3fa3f6] hover:shadow-md transition-all duration-200 bg-[#ffffff]"
-              >
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-3 p-4 bg-gray-50 rounded-lg group-hover:bg-[#b2dafb]/20 transition-colors">
-                    {getFileIcon(file.fileType)}
-                  </div>
-                  
-                  <h4 
-                    className="font-medium text-[#00213e] text-sm mb-1 line-clamp-2 group-hover:text-[#3fa3f6] transition-colors"
-                    style={{ fontFamily: 'Poppins' }}
-                  >
-                    {file.name}
-                  </h4>
-                  
-                  <div 
-                    className="text-xs text-gray-500 space-y-1"
-                    style={{ fontFamily: 'Poppins' }}
-                  >
-                    {file.size && <p>{file.size}</p>}
-                    {file.uploadedDate && (
-                      <p>{new Date(file.uploadedDate).toLocaleDateString()}</p>
-                    )}
-                  </div>
-                  
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-8 w-8 p-0 mt-2 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg hover:bg-[#b2dafb]/30"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="rounded-lg">
-                      <DropdownMenuItem>
-                        <Eye className="h-4 w-4 mr-2" />
-                        Open
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Eye className="h-4 w-4 mr-2" />
-                        Preview
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </div>
+              <GridShowingFile key={file.id} file={file} />
             ))}
           </div>
         ) : (
           <div className="space-y-1">
             {filesToShow.map((file) => (
-              <div
-                key={file.id}
-                className="group flex items-center px-4 py-3 rounded-lg hover:bg-[#b2dafb]/20 cursor-pointer transition-colors border border-transparent hover:border-[#3fa3f6]/30"
-              >
-                <div className="flex items-center space-x-3 flex-1 min-w-0">
-                  <div className="flex-shrink-0">
-                    {getFileIcon(file.fileType)}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h4 
-                      className="font-medium text-[#00213e] truncate group-hover:text-[#3fa3f6] transition-colors"
-                      style={{ fontFamily: 'Poppins' }}
-                    >
-                      {file.name}
-                    </h4>
-                    <div 
-                      className="flex items-center space-x-3 text-sm text-gray-500"
-                      style={{ fontFamily: 'Poppins' }}
-                    >
-                      {file.uploadedDate && (
-                        <span>Modified {new Date(file.uploadedDate).toLocaleDateString()}</span>
-                      )}
-                      {file.size && (
-                        <span>{file.size}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg hover:bg-[#b2dafb]/30"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="rounded-lg">
-                    <DropdownMenuItem>
-                      <Eye className="h-4 w-4 mr-2" />
-                      Open
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Eye className="h-4 w-4 mr-2" />
-                      Preview
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+              <ListShowingFile key={file.id} file={file} />
             ))}
           </div>
         )}
-        
       </div>
     </div>
   )

@@ -15,22 +15,22 @@ interface DriveStyleRowProps {
 }
 
 export const getFileIcon = (fileType?: string) => {
-  if (!fileType) return <FileText className="h-4 w-4 text-gray-500" />
+  if (!fileType) return <FileText className="h-8 w-8 text-gray-500" />
   
   switch (fileType) {
     case 'pdf':
-      return <FileText className="h-4 w-4 text-red-600" />
+      return <FileText className="h-8 w-8 text-red-600" />
     case 'doc':
-      return <FileText className="h-4 w-4 text-blue-600" />
+      return <FileText className="h-8 w-8 text-blue-600" />
     case 'ppt':
-      return <FileText className="h-4 w-4 text-orange-600" />
+      return <FileText className="h-8 w-8 text-orange-600" />
     case 'txt':
-      return <FileText className="h-4 w-4 text-gray-600" />
+      return <FileText className="h-8 w-8 text-gray-600" />
     case 'jpg':
     case 'png':
-      return <FileText className="h-4 w-4 text-green-600" />
+      return <FileText className="h-8 w-8 text-green-600" />
     default:
-      return <FileText className="h-4 w-4 text-gray-500" />
+      return <FileText className="h-8 w-8 text-gray-500" />
   }
 }
 
