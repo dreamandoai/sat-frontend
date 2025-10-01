@@ -8,9 +8,28 @@ import { formatFileSize } from '../../utils/formatters';
 
 interface ListShowingFileProps {
   file: FileNode,
+  onSelectedFile: (file: FileNode | null) => void
+  onShowPDFViewer: (show: boolean) => void
 }
 
-const GridShowingFile: React.FC<ListShowingFileProps> = ({ file }) => {
+const GridShowingFile: React.FC<ListShowingFileProps> = ({ file, onSelectedFile, onShowPDFViewer }) => {
+  
+  const handleFileOpen = (file: FileNode) => {
+    onSelectedFile(file);
+    if (file.fileType === 'pdf') {
+      onShowPDFViewer(true);
+    }
+  }
+
+  const handleDownload = (file: FileNode) => {
+    const link = document.createElement('a');
+    link.href = file.downloadLink;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="group flex items-center px-4 py-3 rounded-lg hover:bg-[#b2dafb]/20 cursor-pointer transition-colors border border-transparent hover:border-[#3fa3f6]/30">
       <div className="flex items-center space-x-3 flex-1 min-w-0">
@@ -50,15 +69,11 @@ const GridShowingFile: React.FC<ListShowingFileProps> = ({ file }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="rounded-lg">
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleFileOpen(file)}>
             <Eye className="h-4 w-4 mr-2" />
             Open
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Eye className="h-4 w-4 mr-2" />
-            Preview
-          </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleDownload(file)}>
             <Download className="h-4 w-4 mr-2" />
             Download
           </DropdownMenuItem>

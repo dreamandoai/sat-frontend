@@ -8,9 +8,28 @@ import { formatFileSize } from '../../utils/formatters';
 
 interface GridShowingFileProps {
   file: FileNode,
+  onSelectedFile: (file: FileNode | null) => void
+  onShowPDFViewer: (show: boolean) => void
 }
 
-const GridShowingFile: React.FC<GridShowingFileProps> = ({ file }) => {
+const GridShowingFile: React.FC<GridShowingFileProps> = ({ file, onSelectedFile, onShowPDFViewer }) => {
+  
+  const handleFileOpen = (file: FileNode) => {
+    onSelectedFile(file);
+    if (file.fileType === 'pdf') {
+      onShowPDFViewer(true);
+    }
+  }
+
+  const handleDownload = (file: FileNode) => {
+    const link = document.createElement('a');
+    link.href = file.downloadLink;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="group cursor-pointer p-4 rounded-lg border border-gray-200 hover:border-[#3fa3f6] hover:shadow-md transition-all duration-200 bg-[#ffffff]">
       <div className="flex flex-col">
@@ -23,22 +42,18 @@ const GridShowingFile: React.FC<GridShowingFileProps> = ({ file }) => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg bg-[#b2dafb]/30"
+                className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg hover:bg-[#b2dafb]/30"
                 onClick={(e) => e.stopPropagation()}
               >
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="rounded-lg">
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleFileOpen(file)}>
                 <Eye className="h-4 w-4 mr-2" />
                 Open
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Eye className="h-4 w-4 mr-2" />
-                Preview
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleDownload(file)}>
                 <Download className="h-4 w-4 mr-2" />
                 Download
               </DropdownMenuItem>

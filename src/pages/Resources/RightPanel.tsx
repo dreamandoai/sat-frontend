@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid3X3, List, Folder, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../../components/Button';
-import type { FolderNode } from '../../types/resources';
+import type { FileNode, FolderNode } from '../../types/resources';
 import { resourceService } from '../../services/resourceService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilesToShow } from '../../store/resourceSlice';
@@ -9,6 +9,7 @@ import type { ApiError } from '../../types/api';
 import type { RootState } from '../../store';
 import GridShowingFile from './GridShowingFile';
 import ListShowingFile from './ListShowingFile';
+import PDFViewer from './PDFViewer';
 
 interface RightPanelProps {
   selectedFolder: FolderNode | null,
@@ -24,6 +25,8 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
   const [token, setToken] = useState<string>("");
   const [remainingFolders, setRemainingFolders] = useState<string[] | null>(null);
   const [isShowNextButton, setIsShowNextButton] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<FileNode | null>(null);
+  const [showPDFViewer, setShowPDFViewer] = useState<boolean>(false);
 
   useEffect(() => {
     handleGetFilesToShow();
@@ -66,6 +69,11 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
       dispatch(setFilesToShow([]));
     }
   };
+
+  const handleClosePDFViewer = () => {
+    setShowPDFViewer(false)
+    setSelectedFile(null)
+  }
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-[#ffffff]">
@@ -162,17 +170,29 @@ const RightPanel: React.FC<RightPanelProps> = ({ selectedFolder, onSelectedFolde
         ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {filesToShow.map((file) => (
-              <GridShowingFile key={file.id} file={file} />
+              <GridShowingFile 
+                key={file.id} 
+                file={file} 
+                onSelectedFile={setSelectedFile}
+                onShowPDFViewer={setShowPDFViewer} 
+              />
             ))}
           </div>
         ) : (
           <div className="space-y-1">
             {filesToShow.map((file) => (
-              <ListShowingFile key={file.id} file={file} />
+              <ListShowingFile 
+                key={file.id} 
+                file={file} 
+                onSelectedFile={setSelectedFile} 
+                onShowPDFViewer={setShowPDFViewer} 
+              />
             ))}
           </div>
         )}
       </div>
+
+      {selectedFile && showPDFViewer && <PDFViewer file={selectedFile} onClose={handleClosePDFViewer} />}
     </div>
   )
 }
