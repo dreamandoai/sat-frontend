@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import type { FileNode } from '../../types/resources'
 import { getFileIcon } from './DriveStyleRow'
 import { Button } from '../../components/Button'
-import { X, Brush, Type, Edit3, Save, StickyNote, Download, RotateCcw, ZoomIn, ZoomOut } from 'lucide-react'
+import { X, Save, Download, RotateCcw } from 'lucide-react'
 import { formatFileSize } from '../../utils/formatters';
 
 interface PDFViewerProps {
@@ -11,9 +11,6 @@ interface PDFViewerProps {
 }
 
 const PDFViewer: React.FC<PDFViewerProps> = ({ file, onClose }) => {
-
-  const [notes, setNotes] = useState<string>('');
-  const [zoom, setZoom] = useState<number>(100);
   const [rotation, setRotation] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,14 +18,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, onClose }) => {
 
   const handleClosePDFViewer = () => {
     onClose();
-  };
-
-  const handleZoomIn = () => {
-    setZoom(prev => Math.min(prev + 25, 300));
-  };
-
-  const handleZoomOut = () => {
-    setZoom(prev => Math.max(prev - 25, 50));
   };
 
   const handleRotate = () => {
@@ -92,14 +81,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, onClose }) => {
     });
   };
 
-  // Load saved notes when component mounts
-  useEffect(() => {
-    const savedNotes = localStorage.getItem(`pdf-notes-${file.id}`);
-    if (savedNotes) {
-      setNotes(savedNotes);
-    }
-  }, [file.id]);
-
   return (
     <div className="fixed inset-0 z-60 bg-black/50 backdrop-blur-sm">
       <div className="fixed inset-4 bg-[#ffffff] rounded-lg shadow-2xl flex flex-col">
@@ -160,58 +141,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, onClose }) => {
           <div className="flex-1 flex flex-col">
             {/* Toolbar */}
             <div className="h-12 bg-[#feefad]/20 border-b border-[#b2dafb]/20 flex items-center px-4 space-x-2">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="hover:bg-[#b2dafb]/20 rounded-lg"
-                style={{ fontFamily: 'Poppins' }}
-              >
-                <Brush className="h-4 w-4 mr-2 text-[#3fa3f6]" />
-                Highlight
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="hover:bg-[#b2dafb]/20 rounded-lg"
-                style={{ fontFamily: 'Poppins' }}
-              >
-                <Type className="h-4 w-4 mr-2 text-[#3fa3f6]" />
-                Add Text
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="hover:bg-[#b2dafb]/20 rounded-lg"
-                style={{ fontFamily: 'Poppins' }}
-              >
-                <Edit3 className="h-4 w-4 mr-2 text-[#3fa3f6]" />
-                Draw
-              </Button>
-              
-              <div className="w-px h-6 bg-[#b2dafb]/30 mx-2" />
-              
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleZoomOut}
-                className="hover:bg-[#b2dafb]/20 rounded-lg"
-                disabled={zoom <= 50}
-              >
-                <ZoomOut className="h-4 w-4 text-[#3fa3f6]" />
-              </Button>
-              <span className="text-sm text-[#00213e] min-w-[3rem] text-center" style={{ fontFamily: 'Poppins' }}>
-                {zoom}%
-              </span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleZoomIn}
-                className="hover:bg-[#b2dafb]/20 rounded-lg"
-                disabled={zoom >= 300}
-              >
-                <ZoomIn className="h-4 w-4 text-[#3fa3f6]" />
-              </Button>
-              
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -306,8 +235,8 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, onClose }) => {
                   >
                     {viewMethod === 'iframe' && (
                       <iframe
-                        src={`${getEmbeddableUrl()}#toolbar=1&navpanes=1&scrollbar=1&zoom=${zoom}&view=FitH`}
-                        className="w-full h-full min-h-[600px]"
+                        src={`${getEmbeddableUrl()}#toolbar=1&navpanes=1&scrollbar=1&view=FitH`}
+                        className="w-full min-h-[600px]"
                         onLoad={() => {
                           setIsLoading(false);
                           setError(null);
@@ -321,7 +250,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, onClose }) => {
                       <embed
                         src={getDirectPdfUrl()}
                         type="application/pdf"
-                        className="w-full h-full"
+                        className="w-full min-h-[600px]"
                         onLoad={() => {
                           setIsLoading(false);
                           setError(null);
@@ -355,40 +284,6 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ file, onClose }) => {
                   </div>
                 )}
               </div>
-            </div>
-          </div>
-
-          {/* Notes Panel */}
-          <div className="w-80 bg-[#feefad]/10 border-l border-[#b2dafb]/20 flex flex-col">
-            <div className="h-12 flex items-center px-4 border-b border-[#b2dafb]/20 bg-white/50">
-              <StickyNote className="h-4 w-4 mr-2 text-[#3fa3f6]" />
-              <h3 className="font-medium text-[#00213e]">
-                Notes & Comments
-              </h3>
-            </div>
-            
-            <div className="flex-1 p-4">
-              <textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Add your notes and comments here..."
-                className="w-full h-full resize-none border border-[#b2dafb]/30 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#3fa3f6] focus:border-[#3fa3f6] bg-[#ffffff]"
-              />
-            </div>
-            
-            <div className="p-4 border-t border-[#b2dafb]/20">
-              <Button 
-                size="sm" 
-                onClick={() => {
-                  // Here you would typically save to localStorage or send to API
-                  localStorage.setItem(`pdf-notes-${file.id}`, notes);
-                  // You could also show a toast notification here
-                }}
-                className="w-full bg-[#3fa3f6] hover:bg-[#3fa3f6]/90 text-white rounded-lg"
-                style={{ fontFamily: 'Poppins' }}
-              >
-                Save Notes
-              </Button>
             </div>
           </div>
         </div>
