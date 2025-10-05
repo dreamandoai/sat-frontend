@@ -18,8 +18,8 @@ export interface FileNode{
 
 export interface GetFilesRequest {
   folder_id: string,
-  page_token?: string
-  remaining_folders?: string[]
+  token?: string
+  remaining_folders?: string[],
 }
 
 export interface GetFilesResponseState {
@@ -28,8 +28,22 @@ export interface GetFilesResponseState {
   remainingFolders: string[]
 }
 
+export interface History {
+  currentFolder: string | null,
+  files: FileNode[],
+  pageToken: string | null,
+  remainingFolders: string[]
+}
+
 export interface GetFilsResponse {
   files: FileNode[],
   state: GetFilesResponseState
 }
 
+export interface PaginationState {
+  currentFolderId: string | null;
+  token: string | null;
+  remainingFolders: string[];
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
