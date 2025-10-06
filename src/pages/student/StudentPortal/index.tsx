@@ -40,9 +40,11 @@ const portalOptions = [
   }
 ]
 
+const AI_URL = import.meta.env.VITE_AI_URL;
+
 const StudentPortal: React.FC = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user, token } = useSelector((state: RootState) => state.auth);
   const [isCheckPair, setIsCheckPair] = useState<boolean>(false);
 
   const handleOptionClick = (option: string) => {
@@ -52,6 +54,8 @@ const StudentPortal: React.FC = () => {
       navigate("/student/book");
     } else if (option === "Free SAT Resources") {
       navigate("/student/resource");
+    } else if (option === "SAT AI") {
+      window.open(`${AI_URL}?token=${token}`, "_blank");
     }
   }
 

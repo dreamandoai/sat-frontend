@@ -6,10 +6,12 @@ import { logout } from "../../../store/authSlice";
 import type { RootState } from "../../../store";
 import { useNavigate } from "react-router";
 
+const AI_URL = import.meta.env.VITE_AI_URL;
+
 const TeacherPortal: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, token } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = useCallback(() => {
     authService.logout();
@@ -99,7 +101,11 @@ const TeacherPortal: React.FC = () => {
         </div>
 
         {/* SAT AI */}
-        <div className="p-6 rounded-3xl shadow-xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-[#fcda49] border-[rgba(252,218,73,0.3)]">
+        <div 
+          className="p-6 rounded-3xl shadow-xl border cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-[#fcda49] border-[rgba(252,218,73,0.3)]"
+          onClick={() => window.open(`${AI_URL}?token=${token}`, "_blank")}
+          >
+          
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 rounded-2xl shadow-lg bg-gradient-to-br from-[#00213e] to-[#3fa3f6]">
               <Bot className="h-8 w-8 text-white" />
